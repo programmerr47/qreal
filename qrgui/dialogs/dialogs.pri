@@ -9,7 +9,8 @@ HEADERS += \
 	dialogs/gesturesShow/gesturesWidget.h \
 	dialogs/checkoutdialog.h \
 	dialogs/preferencesPages/featuresPage.h \
-	dialogs/preferencesPages/preferencesPage.h
+	dialogs/preferencesPages/preferencesPage.h \
+    dialogs/dialogcontrollerapi.h
 
 SOURCES += \
 	dialogs/plugindialog.cpp \
@@ -21,7 +22,8 @@ SOURCES += \
 	dialogs/preferencesPages/editorPage.cpp \
 	dialogs/preferencesPages/miscellaniousPage.cpp \
 	dialogs/checkoutdialog.cpp \
-	dialogs/preferencesPages/featuresPage.cpp
+	dialogs/preferencesPages/featuresPage.cpp \
+    dialogs/dialogcontrollerapi.cpp
 
 FORMS += \
 	dialogs/editorGeneratorDialog.ui \
