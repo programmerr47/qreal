@@ -1,29 +1,29 @@
 #include "dialogcontrollerapi.h"
 
-#include "../pluginManager/editorManager.h"
+//#include "../pluginManager/editorManager.h"
 
 using namespace qReal;
 
-DialogControllerApi::DialogControllerApi(const EditorManager &mgr)
+DialogControllerApi::DialogControllerApi(EditorManager &mgr)
 {
-    mEditorManager = mgr;
+    mEditorManager = &mgr;
 }
 
 QList<QString> DialogControllerApi::getEditorsNames()
 {
-    QList<QString> editorNames();
-    foreach (Id editor, mEditorManager.editors()){
-        editorNames.append(mEditorManager.friendlyName(editor));
+    QList<QString> editorNames;
+    foreach (Id editor, mEditorManager->editors()){
+        editorNames.append(mEditorManager->friendlyName(editor));
     }
-    return editorNames();
+    return editorNames;
 }
 
 QMap<QString, QString> DialogControllerApi::getDiagramsNames()
 {
-    QMap<QString, QString> diagramNames();
-    foreach (Id editor, mEditorManager.editors()){
-        foreach (Id diagram, mEditorManager.diagrams(editor)){
-            diagramNames.insert(mEditorManager.friendlyName(editor), mEditorManager.friendlyName(diagram));
+    QMap<QString, QString> diagramNames;
+    foreach (Id editor, mEditorManager->editors()){
+        foreach (Id diagram, mEditorManager->diagrams(editor)){
+            diagramNames.insert(mEditorManager->friendlyName(editor), mEditorManager->friendlyName(diagram));
         }
     }
     return diagramNames;
@@ -31,11 +31,11 @@ QMap<QString, QString> DialogControllerApi::getDiagramsNames()
 
 QMap<QString, QString> DialogControllerApi::getElementsNames()
 {
-    QMap<QString, QString> elementNames();
-    foreach (Id editor, mEditorManager.editors()){
-        foreach (Id diagram, mEditorManager.diagrams(editor)){
-            foreach (Id element, mEditorManager.elements(diagram)){
-                elementNames.insert(mEditorManager.friendlyName(diagram), mEditorManager.friendlyName(element));
+    QMap<QString, QString> elementNames;
+    foreach (Id editor, mEditorManager->editors()){
+        foreach (Id diagram, mEditorManager->diagrams(editor)){
+            foreach (Id element, mEditorManager->elements(diagram)){
+                elementNames.insert(mEditorManager->friendlyName(diagram), mEditorManager->friendlyName(element));
             }
         }
     }

@@ -2,6 +2,8 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
+#include "../pluginManager/editorManager.h"
+
 namespace qReal {
 
     class EditorManager;
@@ -9,13 +11,13 @@ namespace qReal {
     class DialogControllerApi
     {
     public:
-        DialogControllerApi(const EditorManager &mgr);
+        DialogControllerApi(EditorManager &mgr);
         virtual QList<QString> getEditorsNames();
         virtual QMap<QString, QString> getDiagramsNames();
         virtual QMap<QString, QString> getElementsNames();
 
     private:
-        EditorManager mEditorManager;
+        EditorManager *mEditorManager;
     };
 
 }
