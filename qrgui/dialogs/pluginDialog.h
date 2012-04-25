@@ -1,17 +1,19 @@
 #pragma once
+#include <QtGui/QLabel>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPushButton>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QTreeWidgetItem>
+#include <QtGui/QHeaderView>
+#include <QtGui/QDialog>
+#include <QtGui/QIcon>
 
-#include <QDialog>
-#include <QIcon>
-
-class QLabel;
-class QPushButton;
-class QStringList;
-class QTreeWidget;
-class QTreeWidgetItem;
+#include <QtCore/QtDebug>
+#include <QtCore/QMap>
+#include <QtCore/QList>
+#include <QtCore/QString>
 
 namespace qReal {
-
-	class EditorManager;
 
 	class PluginDialog : public QDialog
 	{

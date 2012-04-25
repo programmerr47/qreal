@@ -1,23 +1,4 @@
-#include <QPluginLoader>
-#include <QStringList>
-#include <QDir>
-
-#include <QLabel>
-#include <QGridLayout>
-#include <QPushButton>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QHeaderView>
-
-#include <QtCore/QtDebug>
-#include <QtCore/QMap>
-#include <QtCore/QList>
-#include <QString>
-
 #include "pluginDialog.h"
-
-#include "../editorPluginInterface/editorInterface.h"
-#include "../pluginManager/editorManager.h"
 
 using namespace qReal;
 
@@ -77,17 +58,5 @@ PluginDialog::PluginDialog(QList<QString> editors, QMap<QString, QString> diagra
             }
             ++diagram;
         }
-
-        /*foreach (QString diagram, diagrams()) {
-			QTreeWidgetItem *interfaceItem = new QTreeWidgetItem(pluginItem);
-			interfaceItem->setText(0, mgr.friendlyName(diagram));
-			interfaceItem->setIcon(0, interfaceIcon);
-
-			foreach (Id element, mgr.elements(diagram)) {
-				QTreeWidgetItem *featureItem = new QTreeWidgetItem(interfaceItem);
-				featureItem->setText(0, mgr.friendlyName(element));
-				featureItem->setIcon(0, featureIcon);
-			}
-        }*/
 	}
 }
