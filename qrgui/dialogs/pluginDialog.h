@@ -18,7 +18,7 @@ namespace qReal {
 		Q_OBJECT
 
 	public:
-		PluginDialog(const EditorManager &mgr, QWidget *parent = 0);
+        PluginDialog(QList<QString> editors, QMap<QString, QString> diagrams, QMap<QString, QString> elements, QWidget *parent = 0);
 
 	private:
 		QLabel *label;

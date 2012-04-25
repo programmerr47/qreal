@@ -59,6 +59,7 @@ MainWindow::MainWindow()
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
+        , mDialogControllApi(new DialogControllerApi(mEditorManager))
 {
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
@@ -594,7 +595,11 @@ void MainWindow::makeSvg()
 
 void MainWindow::settingsPlugins()
 {
-	PluginDialog dialog(mEditorManager , this);
+    //Michael
+    QList<QString> editors = mDialogControllApi->getEditorsNames();
+    QMap<QString, QString> diagrams = mDialogControllApi->getDiagramsNames();
+    QMap<QString, QString> elements = mDialogControllApi->getElementsNames();
+    PluginDialog dialog(editors, diagrams, elements , this);
 	dialog.exec();
 }
 

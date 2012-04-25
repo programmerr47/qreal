@@ -9,7 +9,10 @@
 #include <QTreeWidgetItem>
 #include <QHeaderView>
 
-#include <QtDebug>
+#include <QtCore/QtDebug>
+#include <QtCore/QMap>
+#include <QtCore/QList>
+#include <QString>
 
 #include "pluginDialog.h"
 
@@ -18,7 +21,7 @@
 
 using namespace qReal;
 
-PluginDialog::PluginDialog(const EditorManager &mgr,
+PluginDialog::PluginDialog(QList<QString> editors, QMap<QString, QString> diagrams, QMap<QString, QString> elements,
 		QWidget *parent) :
 	QDialog(parent),
 	label(new QLabel),
@@ -50,16 +53,32 @@ PluginDialog::PluginDialog(const EditorManager &mgr,
 
 	setWindowTitle(tr("Plugin Information"));
 
-	foreach (Id editor, mgr.editors()) {
+    foreach (QString editor, editors) {
 		QTreeWidgetItem *pluginItem = new QTreeWidgetItem(treeWidget);
-		pluginItem->setText(0, mgr.friendlyName(editor));
+        pluginItem->setText(0, editor);
 		treeWidget->setItemExpanded(pluginItem, true);
 
 		QFont boldFont = pluginItem->font(0);
 		boldFont.setBold(true);
 		pluginItem->setFont(0, boldFont);
 
-		foreach (Id diagram, mgr.diagrams(editor)) {
+        QMap<QString, QString>::const_iterator diagram = diagrams.find(editor);
+        while (diagram != diagrams.end() && diagram.key() == editor){
+            QTreeWidgetItem *interfaceItem = new QTreeWidgetItem(pluginItem);
+            interfaceItem->setText(0, diagram.value());
+            interfaceItem->setIcon(0, interfaceIcon);
+
+            QMap<QString, QString>::const_iterator element = elements.find(diagram.value());
+            while (element != elements.end() && element.key() == diagram.value()){
+                QTreeWidgetItem *featureItem = new QTreeWidgetItem(interfaceItem);
+                featureItem->setText(0, element.value());
+                featureItem->setIcon(0, featureIcon);
+                ++element;
+            }
+            ++diagram;
+        }
+
+        /*foreach (QString diagram, diagrams()) {
 			QTreeWidgetItem *interfaceItem = new QTreeWidgetItem(pluginItem);
 			interfaceItem->setText(0, mgr.friendlyName(diagram));
 			interfaceItem->setIcon(0, interfaceIcon);
@@ -69,6 +88,6 @@ PluginDialog::PluginDialog(const EditorManager &mgr,
 				featureItem->setText(0, mgr.friendlyName(element));
 				featureItem->setIcon(0, featureIcon);
 			}
-		}
+        }*/
 	}
 }
