@@ -1,18 +1,15 @@
 #include "refWindow.h"
-#include "ui_refWindow.h"
-#include "../../qrkernel/ids.h"
 
 RefWindow::RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
-		int role, QModelIndex const &index,
-		qReal::MainWindow &mainWindow)
-	: QWidget(NULL)
-	, mUi(new Ui::RefWindow)
+        int role, QModelIndex const &index, DialogControllerApi &mDCA)
+    : QWidget(NULL)
+    , mUi(new Ui::RefWindow)
 	, mApi(logicalRepoApi)
 	, mTypeName(name)
-	, mRole(role)
-	, mIndex(index)
-	, mMainWindow(mainWindow)
+    , mRole(role)
+    , mIndex(index)
 	, mItem(NULL)
+    , mDialogControllerApi(mDCA)
 {
 	mUi->setupUi(this);
 	qReal::IdList idList = mApi.elementsByType(mTypeName);
@@ -86,14 +83,20 @@ void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 {
 	Q_UNUSED(bl)
 	mItem = item;
-	qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
+    bool isSelected = item->isSelected();
+
+    mDialogControllerApi.activateItemOrDiagram(item->data(Qt::ToolTipRole).toString(), isSelected, false);
+    if (isSelected){
+        mElementList << item;
+    }
+    /*qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
 	if (item->isSelected()) {
 		mMainWindow.activateItemOrDiagram(id, true, false);
 		mElementList << item;
 	}
 	else {
 		mMainWindow.activateItemOrDiagram(id, false, false);
-	}
+    }*/
 }
 
 void RefWindow::cancel()
@@ -115,8 +118,10 @@ void RefWindow::setElementId()
 {
 	for (int i = 0; i < mElementList.size(); ++i)
 	{
-		qReal::Id const id = qReal::Id::loadFromString(mElementList[i]->data(Qt::ToolTipRole).toString());
-		mMainWindow.activateItemOrDiagram(id, false, false);
+        mDialogControllerApi.activateItemOrDiagram(mElementList[i]->data(Qt::ToolTipRole).toString(), false, false);
+        //qReal::Id const id = qReal::Id::loadFromString(mElementList[i]->data(Qt::ToolTipRole).toString());
+        //mMainWindow.activateItemOrDiagram(id, false, false);
 	}
-	mMainWindow.activateItemOrDiagram(mIndex, false);
+    mDialogControllerApi.activateItemOrDiagram(mIndex, false);
+    //mMainWindow.activateItemOrDiagram(mIndex, false);
 }

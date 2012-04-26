@@ -4,6 +4,10 @@
 #include <QWidget>
 #include "../../qrrepo/repoApi.h"
 #include "../mainwindow/mainWindow.h"
+#include "ui_refWindow.h"
+#include "../../qrkernel/ids.h"
+
+#include "dialogcontrollerapi.h"
 
 namespace Ui {
 	class RefWindow;
@@ -15,8 +19,7 @@ class RefWindow : public QWidget
 
 public:
 	explicit RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
-			int role, QModelIndex const &index,
-			qReal::MainWindow &mainWindow);
+            int role, QModelIndex const &index, DialogControllerApi &mDCA);
 	~RefWindow();
 
 public slots:
@@ -31,10 +34,10 @@ private:
 	qrRepo::LogicalRepoApi const &mApi;
 	QString mTypeName;
 	int mRole;
-	QModelIndex const &mIndex;
-	qReal::MainWindow &mMainWindow;
+    QModelIndex const &mIndex;
 	QListWidgetItem *mItem;
 	QList<QListWidgetItem *> mElementList;
+    DialogControllerApi &mDialogControllerApi;
 
 private slots:
 	void enableOkButton(QListWidgetItem* item);

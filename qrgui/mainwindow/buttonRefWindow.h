@@ -3,7 +3,8 @@
 #include <QPushButton>
 #include "../../qrrepo/repoApi.h"
 #include "../../qrgui/dialogs/refWindow.h"
-#include "mainWindow.h"
+
+#include "../dialogs/dialogcontrollerapi.h"
 
 class ButtonRefWindow : public QPushButton
 {
@@ -12,14 +13,14 @@ class ButtonRefWindow : public QPushButton
 public:
 	ButtonRefWindow(QWidget *parent, QString const &typeName
 			, qReal::models::LogicalModelAssistApi const &logicalModelAssistApi
-			, int role, const QModelIndex &index, qReal::MainWindow *mainWindow);
+            , int role, const QModelIndex &index, DialogControllerApi *mDCA);
 
 private:
 	QString mName;
 	qrRepo::LogicalRepoApi const &mApi;
 	int mRole;
 	QPersistentModelIndex const mIndex;
-	qReal::MainWindow * const mMainWindow;
+    DialogControllerApi * const mDialogControllerApi;
 
 private slots:
 	void makeWindow();

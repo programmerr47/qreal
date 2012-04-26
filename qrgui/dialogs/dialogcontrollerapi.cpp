@@ -4,11 +4,13 @@
 
 using namespace qReal;
 
-DialogControllerApi::DialogControllerApi(EditorManager &mgr)
+DialogControllerApi::DialogControllerApi(EditorManager &mgr, MainWindow &mMW)
+        : mEditorManager(&mgr)
+        , mMainWindow(mMW)
 {
-    mEditorManager = &mgr;
 }
 
+//PluginDialog
 QList<QString> DialogControllerApi::getEditorsNames()
 {
     QList<QString> editorNames;
@@ -40,4 +42,16 @@ QMap<QString, QString> DialogControllerApi::getElementsNames()
         }
     }
     return elementNames;
+}
+
+//refWindow
+void DialogControllerApi::activateItemOrDiagram(QString idIdentificator, bool bl, bool isSetSel)
+{
+    qReal::Id const id = qReal::Id::loadFromString(idIdentificator);
+        mMainWindow.activateItemOrDiagram(id, bl, isSetSel);
+}
+
+void DialogControllerApi::activateItemOrDiagram(QModelIndex const &modelIndex, bool bl, bool isSetSel)
+{
+        mMainWindow.activateItemOrDiagram(modelIndex, bl, isSetSel);
 }
