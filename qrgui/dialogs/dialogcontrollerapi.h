@@ -8,6 +8,8 @@
 //ёрий, посоветую как лучше...может с помощью волн.скобочек?
 using namespace qReal;
 
+    class MainWindow;
+
     /// Dialog Control Api is an interface that
     /// implements the initialisation of graphical part
 
