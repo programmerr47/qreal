@@ -1,14 +1,17 @@
+#pragma once
+
 #include <QtCore/QMap>
 #include <QtCore/QList>
 #include <QtCore/QString>
 
 #include "../pluginManager/editorManager.h"
-#include "../mainwindow/mainWindow.h"
+//#include "../mainwindow/mainWindow.h"
 
 //ёрий, посоветую как лучше...может с помощью волн.скобочек?
-using namespace qReal;
-
+namespace qReal{
     class MainWindow;
+    class EditorManager;
+}
 
     /// Dialog Control Api is an interface that
     /// implements the initialisation of graphical part
@@ -16,7 +19,7 @@ using namespace qReal;
     class DialogControllerApi
     {
     public:
-        DialogControllerApi(EditorManager &mgr, MainWindow &mMW);
+        DialogControllerApi(qReal::EditorManager &mgr, qReal::MainWindow &mMW);
 
         //pligunDialog
         virtual QList<QString> getEditorsNames();
@@ -25,11 +28,11 @@ using namespace qReal;
 
         //refWindow
         virtual void activateItemOrDiagram(QString idIdentificator, bool bl = true, bool isSetSel = true);
-        virtual void activateItemOrDiagram(QModelIndex modelIndex, bool bl = true, bool isSetSel = true);
+        virtual void activateItemOrDiagram(QModelIndex const &modelIndex, bool bl = true, bool isSetSel = true);
 
     private:
-        MainWindow &mMainWindow;
-        EditorManager *mEditorManager;
+        qReal::MainWindow &mMainWindow;
+        qReal::EditorManager *mEditorManager;
     };
 
 //}

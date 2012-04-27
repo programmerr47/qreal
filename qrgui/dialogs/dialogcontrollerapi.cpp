@@ -1,6 +1,7 @@
 #include "dialogcontrollerapi.h"
 
 //#include "../pluginManager/editorManager.h"
+#include "../mainwindow/mainWindow.h"
 
 using namespace qReal;
 

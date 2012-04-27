@@ -1,4 +1,5 @@
 #include "refWindow.h"
+//#include "dialogcontrollerapi.h"
 
 RefWindow::RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
         int role, QModelIndex const &index, DialogControllerApi &mDCA)

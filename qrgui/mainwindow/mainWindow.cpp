@@ -59,7 +59,7 @@ MainWindow::MainWindow()
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
-        , mDialogControllApi(new DialogControllerApi(mEditorManager), this)
+        , mDialogControllApi(new DialogControllerApi(mEditorManager, *this))
 {
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
