@@ -59,7 +59,6 @@ MainWindow::MainWindow()
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
-        , mDialogControllApi(new DialogControllerApi(mEditorManager, *this))
 {
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
@@ -119,6 +118,9 @@ MainWindow::MainWindow()
 		mSaveFile = saveFile.absoluteFilePath();
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+
+    mDialogControllApi= new DialogControllerApi(mEditorManager, *this, mModels->logicalRepoApi());
+
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());

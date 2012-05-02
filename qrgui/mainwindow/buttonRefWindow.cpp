@@ -20,7 +20,7 @@ ButtonRefWindow::ButtonRefWindow(QWidget *parent, QString const &typeName
 
 void ButtonRefWindow::makeWindow()
 {
-    RefWindow *window = new RefWindow(mApi, mName, mRole, mIndex, *mDialogControllerApi);
+    RefWindow *window = new RefWindow(mName, mRole, mIndex, *mDialogControllerApi);
 	window->setWindowModality(Qt::ApplicationModal);
 	window->show();
 }

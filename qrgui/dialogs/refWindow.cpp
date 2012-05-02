@@ -1,11 +1,10 @@
 #include "refWindow.h"
 //#include "dialogcontrollerapi.h"
 
-RefWindow::RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
-        int role, QModelIndex const &index, DialogControllerApi &mDCA)
+RefWindow::RefWindow(const QString &name, int role,
+        const QModelIndex &index, DialogControllerApi &mDCA)
     : QWidget(NULL)
     , mUi(new Ui::RefWindow)
-	, mApi(logicalRepoApi)
 	, mTypeName(name)
     , mRole(role)
     , mIndex(index)
@@ -13,11 +12,38 @@ RefWindow::RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const
     , mDialogControllerApi(mDCA)
 {
 	mUi->setupUi(this);
-	qReal::IdList idList = mApi.elementsByType(mTypeName);
+    mUi->listWidget->setSelectionMode(QAbstractItemView::MultiSelection);
+    QString const str = mIndex.data(mRole).toString();
+    int sizeStr = str.count("$$");
+
+    QList<QString> elementParentNames = mDCA.prepareParentNamesByType(mTypeName);
+    int size = elementParentNames.size();
+
+    QList<QVariant> elemetsData = mDCA.getElementsDataByType(mTypeName);
+
+    for (int i = 0; i < size; ++i)
+    {
+        QString parentName = elementParentNames.at(i);
+        if (parentName.contains("Diagram"))
+        {
+            QListWidgetItem *item = new QListWidgetItem();
+            QString text = parentName + "::" + elementParentNames.at(i);
+            item->setText(text);
+            QVariant val = elemetsData.at(i);
+            item->setData(Qt::ToolTipRole, val);
+            mUi->listWidget->addItem(item);
+            for (int k = 0; k < sizeStr; ++k)
+            {
+                if (val == str.section("$$", k, k))
+                    item->setSelected(true);
+            }
+        }
+    }
+
+    /*
+    qReal::IdList idList = mApi.elementsByType(mTypeName);
 	int size = idList.size();
-	mUi->listWidget->setSelectionMode(QAbstractItemView::MultiSelection);
-	QString const str = mIndex.data(mRole).toString();
-	int sizeStr = str.count("$$");
+
 	for (int i = 0; i < size; ++i)
 	{
 		qReal::Id parentId = mApi.parent(idList[i]);
@@ -37,6 +63,7 @@ RefWindow::RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const
 			}
 		}
 	}
+    */
 	mUi->mButtonOk->setEnabled(false);
 	connect(mUi->listWidget, SIGNAL(itemClicked(QListWidgetItem*)), this,
 			SLOT(highlightElement(QListWidgetItem*)));

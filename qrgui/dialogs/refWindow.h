@@ -2,10 +2,11 @@
 
 #include <QtGui>
 #include <QWidget>
-#include "../../qrrepo/repoApi.h"
-#include "../mainwindow/mainWindow.h"
+//#include "../../qrrepo/repoApi.h"
+//#include "../mainwindow/mainWindow.h"
 #include "ui_refWindow.h"
-#include "../../qrkernel/ids.h"
+//#include "../../qrkernel/ids.h"
+#include "dialogcontrollerapi.h"
 
 namespace Ui {
 	class RefWindow;
@@ -16,8 +17,11 @@ class RefWindow : public QWidget
 	Q_OBJECT
 
 public:
-	explicit RefWindow(qrRepo::LogicalRepoApi const &logicalRepoApi, QString const &name,
+    explicit RefWindow(QString const &name,
             int role, QModelIndex const &index, DialogControllerApi &mDCA);
+    // Previously got repoApi from buttonRefWindow
+    // now thru dialogControlApi from mainWindow
+    // look into it if bugs occur
 	~RefWindow();
 
 public slots:
@@ -29,7 +33,6 @@ private:
 	void keyPressEvent(QKeyEvent *event);
 
 	Ui::RefWindow *mUi;
-	qrRepo::LogicalRepoApi const &mApi;
 	QString mTypeName;
 	int mRole;
     QModelIndex const &mIndex;
