@@ -32,7 +32,7 @@ namespace qrRepo{
         virtual QMap<QString, QString> getElementsNames();
         virtual QList<QString> prepareParentNamesByType(QString mTypeName);//refWindow
         virtual QList<QVariant> getElementsDataByType(QString mTypeName);//refWindow
-        virtual void activateItemOrDiagram(QString idIdentificator, bool bl = true, bool isSetSel = true);//refWindow
+        virtual void activateItemOrDiagram(const qReal::Id &id, bool bl = true, bool isSetSel = true);//refWindow
         virtual void activateItemOrDiagram(QModelIndex const &modelIndex, bool bl = true, bool isSetSel = true);//refWindow
     private:
         qReal::MainWindow &mMainWindow;
