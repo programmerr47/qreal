@@ -47,7 +47,8 @@ MainWindow::MainWindow()
 		, mCloseEvent(NULL)
 		, mModels(NULL)
 		, mListenerManager(NULL)
-		, mPropertyModel(mEditorManager)
+        , mMainWindowControllerApi(new MainWindowControllerApi(mEditorManager))
+        , mPropertyModel(mEditorManager, mMainWindowControllerApi)
 		, mGesturesWidget(NULL)
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
@@ -120,7 +121,6 @@ MainWindow::MainWindow()
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
     mDialogControllApi= new DialogControllerApi(mEditorManager, *this, mModels->logicalRepoApi());
-
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
