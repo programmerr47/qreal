@@ -9,13 +9,11 @@
 
 using namespace qReal;
 
-PropertyEditorModel::PropertyEditorModel(qReal::EditorManager const &editorManager,
-                                         MainWindowControllerApi *controllerApi,
-        QObject *parent)
+PropertyEditorModel::PropertyEditorModel(MainWindowControllerApi *controllerApi
+                                         ,QObject *parent)
 	: QAbstractTableModel(parent)
 	, mTargetLogicalModel(NULL)
 	, mTargetGraphicalModel(NULL)
-	, mEditorManager(editorManager)
     , mControllerApi(controllerApi)
 {
 }
@@ -149,7 +147,7 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
-	return mEditorManager.getEnumValues(id, mFields[index.row()].fieldName);
+    return mControllerApi->getEnumValues(id, mFields[index.row()].fieldName);
 }
 
 //QString PropertyEditorModel::typeName(const QModelIndex &index) const
@@ -203,7 +201,7 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 
 	if (logicalModelIndex != QModelIndex()) {
 		Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
-		QStringList const logicalProperties = mEditorManager.getPropertyNames(logicalId.type());
+        QStringList const logicalProperties = mControllerApi->getPropertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
 			mFields << Field(property, logicalAttribute, role);
@@ -270,5 +268,5 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 	default:
 		return "";  // Non-logical and non-graphical attributes have no type by default
 	}
-	return mEditorManager.getTypeName(id, mFields[index.row()].fieldName);
+    return mControllerApi->getTypeName(id, mFields[index.row()].fieldName);
 }
