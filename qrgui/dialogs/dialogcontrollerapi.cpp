@@ -51,9 +51,8 @@ QMap<QString, QString> DialogControllerApi::getElementsNames()
 }
 
 //refWindow
-void DialogControllerApi::activateItemOrDiagram(QString idIdentificator, bool bl, bool isSetSel)
+void DialogControllerApi::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
 {
-    qReal::Id const id = qReal::Id::loadFromString(idIdentificator);
         mMainWindow.activateItemOrDiagram(id, bl, isSetSel);
 }
 

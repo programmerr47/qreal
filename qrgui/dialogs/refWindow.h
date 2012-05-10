@@ -5,7 +5,7 @@
 //#include "../../qrrepo/repoApi.h"
 //#include "../mainwindow/mainWindow.h"
 #include "ui_refWindow.h"
-//#include "../../qrkernel/ids.h"
+#include "../../qrkernel/ids.h"
 #include "dialogcontrollerapi.h"
 
 namespace Ui {

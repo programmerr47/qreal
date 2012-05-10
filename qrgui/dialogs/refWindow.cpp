@@ -1,4 +1,5 @@
 #include "refWindow.h"
+
 //#include "dialogcontrollerapi.h"
 
 RefWindow::RefWindow(const QString &name, int role,
@@ -113,7 +114,8 @@ void RefWindow::highlightElement(QListWidgetItem *item, bool bl)
 	mItem = item;
     bool isSelected = item->isSelected();
 
-    mDialogControllerApi.activateItemOrDiagram(item->data(Qt::ToolTipRole).toString(), isSelected, false);
+    qReal::Id const id = qReal::Id::loadFromString(item->data(Qt::ToolTipRole).toString());
+    mDialogControllerApi.activateItemOrDiagram(id, isSelected, false);
     if (isSelected){
         mElementList << item;
     }
@@ -146,7 +148,8 @@ void RefWindow::setElementId()
 {
 	for (int i = 0; i < mElementList.size(); ++i)
 	{
-        mDialogControllerApi.activateItemOrDiagram(mElementList[i]->data(Qt::ToolTipRole).toString(), false, false);
+        qReal::Id const id = qReal::Id::loadFromString(mElementList[i]->data(Qt::ToolTipRole).toString());
+        mDialogControllerApi.activateItemOrDiagram(id, false, false);
         //qReal::Id const id = qReal::Id::loadFromString(mElementList[i]->data(Qt::ToolTipRole).toString());
         //mMainWindow.activateItemOrDiagram(id, false, false);
 	}
