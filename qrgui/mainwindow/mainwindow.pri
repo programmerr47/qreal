@@ -10,6 +10,7 @@ HEADERS += \
 	mainwindow/mainWindowInterpretersInterface.h \
 	mainwindow/helpBrowser.h \
 	mainwindow/paletteTree.h \
+    mainwindow/mainWindowControllerApi.h \
     mainwindow/mainWindowControllerApi.h
 
 SOURCES += \
