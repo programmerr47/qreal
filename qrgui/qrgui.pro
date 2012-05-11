@@ -7,7 +7,8 @@ macx {
 }
 
 RESOURCES = qrgui.qrc
-SOURCES = main.cpp
+SOURCES = main.cpp \
+    controllerApi.cpp
 
 TRANSLATIONS = qrgui_ru.ts
 
@@ -67,3 +68,6 @@ include (toolPluginInterface/toolPluginInterface.pri)
 
 # Text Editor
 include (textEditor/textEditor.pri)
+
+HEADERS += \
+    controllerApi.h
