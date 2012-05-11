@@ -16,7 +16,7 @@ public:
     QString getTypeName(const qReal::Id &id, const QString &propertyName) const;
 
 private:
-    qReal::EditorManager &mEditorManager;
+    qReal::EditorManager const &mEditorManager;
 };
 
 #endif // MAINWINDOWCONTROLLERAPI_H

@@ -312,7 +312,7 @@ private:
 	qReal::gui::PaletteTree *mPaletteTree;
 
     DialogControllerApi *mDialogControllApi;
-    MainWindowControllerApi *mMainWindowControllerApi;
+    MainWindowControllerApi mMainWindowControllerApi;
 };
 
 }

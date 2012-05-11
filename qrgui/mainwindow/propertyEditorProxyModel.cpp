@@ -9,7 +9,7 @@
 
 using namespace qReal;
 
-PropertyEditorModel::PropertyEditorModel(MainWindowControllerApi *controllerApi
+PropertyEditorModel::PropertyEditorModel(MainWindowControllerApi &controllerApi
                                          ,QObject *parent)
 	: QAbstractTableModel(parent)
 	, mTargetLogicalModel(NULL)
@@ -63,7 +63,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 	if (role == Qt::ToolTipRole) {
 		if (index.column() == 0) {
 			Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-            QString const description = mControllerApi->propertyDescription(id, mFields[index.row()].fieldName);
+            QString const description = mControllerApi.propertyDescription(id, mFields[index.row()].fieldName);
 			if (!description.isEmpty())
 				return "<body>" + description;
 			else
@@ -79,7 +79,7 @@ QVariant PropertyEditorModel::data(QModelIndex const &index, int role) const
 
 	if (index.column() == 0) {
 		Id const id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-        QString const displayedName = mControllerApi->propertyDisplayedName(id, mFields[index.row()].fieldName);
+        QString const displayedName = mControllerApi.propertyDisplayedName(id, mFields[index.row()].fieldName);
 		return displayedName.isEmpty() ? mFields[index.row()].fieldName : displayedName;
 	} else if (index.column() == 1) {
 		switch (mFields[index.row()].attributeClass) {
@@ -147,7 +147,7 @@ QStringList PropertyEditorModel::enumValues(const QModelIndex &index) const
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
-    return mControllerApi->getEnumValues(id, mFields[index.row()].fieldName);
+    return mControllerApi.getEnumValues(id, mFields[index.row()].fieldName);
 }
 
 //QString PropertyEditorModel::typeName(const QModelIndex &index) const
@@ -201,7 +201,7 @@ void PropertyEditorModel::setModelIndexes(QModelIndex const &logicalModelIndex
 
 	if (logicalModelIndex != QModelIndex()) {
 		Id const logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
-        QStringList const logicalProperties = mControllerApi->getPropertyNames(logicalId.type());
+        QStringList const logicalProperties = mControllerApi.getPropertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
 		foreach (QString property, logicalProperties) {
 			mFields << Field(property, logicalAttribute, role);
@@ -268,5 +268,5 @@ QString PropertyEditorModel::typeName(QModelIndex const &index) const
 	default:
 		return "";  // Non-logical and non-graphical attributes have no type by default
 	}
-    return mControllerApi->getTypeName(id, mFields[index.row()].fieldName);
+    return mControllerApi.getTypeName(id, mFields[index.row()].fieldName);
 }
