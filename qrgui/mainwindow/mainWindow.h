@@ -22,8 +22,7 @@
 
 #include "../models/logicalModelAssistApi.h"
 
-#include "../dialogs/dialogcontrollerapi.h"
-#include "mainWindowControllerApi.h"
+#include "../controllerApi.h"
 
 #include  "paletteTree.h"
 namespace Ui {
@@ -311,8 +310,7 @@ private:
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
 
-    DialogControllerApi *mDialogControllApi;
-    MainWindowControllerApi mMainWindowControllerApi;
+	ControllerApi mControllerApi;
 };
 
 }

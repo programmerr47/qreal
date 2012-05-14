@@ -70,4 +70,6 @@ include (toolPluginInterface/toolPluginInterface.pri)
 include (textEditor/textEditor.pri)
 
 HEADERS += \
-    controllerApi.h
+    controllerApi.h \
+    dialogControllerApi.h \
+    mainWindowControllerApi.h

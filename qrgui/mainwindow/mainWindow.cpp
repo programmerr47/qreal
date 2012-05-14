@@ -47,8 +47,7 @@ MainWindow::MainWindow()
 		, mCloseEvent(NULL)
 		, mModels(NULL)
 		, mListenerManager(NULL)
-        , mMainWindowControllerApi(mEditorManager)
-        , mPropertyModel(mMainWindowControllerApi)
+        , mPropertyModel(static_cast<MainWindowControllerApi>(mControllerApi))
 		, mGesturesWidget(NULL)
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
@@ -120,7 +119,7 @@ MainWindow::MainWindow()
 
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
-    mDialogControllApi= new DialogControllerApi(mEditorManager, *this, mModels->logicalRepoApi());
+	mControllerApi(mEditorManager, *this, mModels->logicalRepoApi());
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -598,9 +597,9 @@ void MainWindow::makeSvg()
 void MainWindow::settingsPlugins()
 {
     //Michael
-    QList<QString> editors = mDialogControllApi->getEditorsNames();
-    QMap<QString, QString> diagrams = mDialogControllApi->getDiagramsNames();
-    QMap<QString, QString> elements = mDialogControllApi->getElementsNames();
+	QList<QString> editors = mControllerApi.getEditorsNames();
+	QMap<QString, QString> diagrams = mControllerApi.getDiagramsNames();
+	QMap<QString, QString> elements = mControllerApi.getElementsNames();
     PluginDialog dialog(editors, diagrams, elements , this);
 	dialog.exec();
 }

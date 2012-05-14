@@ -9,7 +9,7 @@
 #include "../pluginManager/editorManager.h"
 #include "../../qrrepo/logicalRepoApi.h"
 
-#include "mainWindowControllerApi.h"
+#include "../mainWindowControllerApi.h"
 
 /** @class PropertyEditorModel
  *	@brief Модель редактора свойств

@@ -4,7 +4,7 @@
 #include "../../qrrepo/repoApi.h"
 #include "../../qrgui/dialogs/refWindow.h"
 
-#include "../dialogs/dialogcontrollerapi.h"
+#include "../dialogcontrollerapi.h"
 
 class ButtonRefWindow : public QPushButton
 {
