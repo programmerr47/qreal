@@ -7,9 +7,9 @@
 class MainWindowControllerApi
 {
 public:
-	virtual QString propertyDescription(const qReal::Id &id, const QString &propertyName) const;
-	virtual QString propertyDisplayedName(const qReal::Id &id, const QString &propertyName) const;
-	virtual QStringList getEnumValues(const qReal::Id &id, const QString &propertyName) const;
-	virtual QStringList getPropertyNames(const qReal::Id &id) const;
-	virtual QString getTypeName(const qReal::Id &id, const QString &propertyName) const;
+	virtual QString propertyDescription(const qReal::Id &id, const QString &propertyName) const =0;
+	virtual QString propertyDisplayedName(const qReal::Id &id, const QString &propertyName) const =0;
+	virtual QStringList getEnumValues(const qReal::Id &id, const QString &propertyName) const =0;
+	virtual QStringList getPropertyNames(const qReal::Id &id) const =0;
+	virtual QString getTypeName(const qReal::Id &id, const QString &propertyName) const =0;
 };

@@ -6,7 +6,7 @@
 //#include "../mainwindow/mainWindow.h"
 #include "ui_refWindow.h"
 #include "../../qrkernel/ids.h"
-#include "dialogcontrollerapi.h"
+#include "../dialogcontrollerapi.h"
 
 namespace Ui {
 	class RefWindow;

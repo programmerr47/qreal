@@ -46,8 +46,9 @@ MainWindow::MainWindow()
 		: mUi(new Ui::MainWindowUi)
 		, mCloseEvent(NULL)
 		, mModels(NULL)
+		, mControllerApi(NULL)
+		, mPropertyModel(NULL)
 		, mListenerManager(NULL)
-        , mPropertyModel(static_cast<MainWindowControllerApi>(mControllerApi))
 		, mGesturesWidget(NULL)
 		, mRootIndex(QModelIndex())
 		, mErrorReporter(NULL)
@@ -116,10 +117,10 @@ MainWindow::MainWindow()
 
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
-
 	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
 
-	mControllerApi(mEditorManager, *this, mModels->logicalRepoApi());
+	mControllerApi = new ControllerApi(mEditorManager, *this, mModels->logicalRepoApi());
+	mPropertyModel = new PropertyEditorModel(*mControllerApi);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
 	mErrorReporter->updateVisibility(SettingsManager::value("warningWindow", true).toBool());
@@ -386,7 +387,7 @@ void MainWindow::sceneSelectionChanged()
 
 	if (selected.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
-		mPropertyModel.clearModelIndexes();
+		mPropertyModel->clearModelIndexes();
 	} else if (selected.length() > 1) {
 		foreach(Element* notSingleSelected, selected) {
 			notSingleSelected->singleSelectionState(false);
@@ -538,7 +539,7 @@ bool MainWindow::open(QString const &fileName)
 
 	if (!checkPluginsAndReopen(NULL))
 		return false;
-	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+	mPropertyModel->setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
@@ -597,9 +598,9 @@ void MainWindow::makeSvg()
 void MainWindow::settingsPlugins()
 {
     //Michael
-	QList<QString> editors = mControllerApi.getEditorsNames();
-	QMap<QString, QString> diagrams = mControllerApi.getDiagramsNames();
-	QMap<QString, QString> elements = mControllerApi.getElementsNames();
+	QList<QString> editors = mControllerApi->getEditorsNames();
+	QMap<QString, QString> diagrams = mControllerApi->getDiagramsNames();
+	QMap<QString, QString> elements = mControllerApi->getElementsNames();
     PluginDialog dialog(editors, diagrams, elements , this);
 	dialog.exec();
 }
@@ -1426,12 +1427,12 @@ void MainWindow::setIndexesOfPropertyEditor(Id const &id)
 		Id const logicalId = mModels->graphicalModelAssistApi().logicalId(id);
 		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(logicalId);
 		QModelIndex const graphicalIndex = mModels->graphicalModelAssistApi().indexById(id);
-		mPropertyModel.setModelIndexes(logicalIndex, graphicalIndex);
+		mPropertyModel->setModelIndexes(logicalIndex, graphicalIndex);
 	} else if (mModels->logicalModelAssistApi().isLogicalId(id)) {
 		QModelIndex const logicalIndex = mModels->logicalModelAssistApi().indexById(id);
-		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
+		mPropertyModel->setModelIndexes(logicalIndex, QModelIndex());
 	} else {
-		mPropertyModel.clearModelIndexes();
+		mPropertyModel->clearModelIndexes();
 	}
 }
 
@@ -1748,7 +1749,7 @@ void MainWindow::initWindowTitle()
 void MainWindow::initExplorers()
 {
 	mUi->propertyEditor->init(this, &mModels->logicalModelAssistApi());
-	mUi->propertyEditor->setModel(&mPropertyModel);
+	mUi->propertyEditor->setModel(&(*mPropertyModel));
 
 	mUi->graphicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->graphicalModelExplorer->setModel(mModels->graphicalModel());
@@ -1756,7 +1757,7 @@ void MainWindow::initExplorers()
 	mUi->logicalModelExplorer->addAction(mUi->actionDeleteFromDiagram);
 	mUi->logicalModelExplorer->setModel(mModels->logicalModel());
 
-	mPropertyModel.setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
+	mPropertyModel->setSourceModels(mModels->logicalModel(), mModels->graphicalModel());
 
 	connect(&mModels->graphicalModelAssistApi(), SIGNAL(nameChanged(Id const &)), this, SLOT(updateTabName(Id const &)));
 	connect(mUi->graphicalModelExplorer, SIGNAL(clicked(QModelIndex const &)), this, SLOT(graphicalModelExplorerClicked(QModelIndex)));

@@ -23,13 +23,13 @@ namespace qrRepo{
 	{
 	public:
 		//pligunDialog
-		virtual QList<QString> getEditorsNames() = 0;
-		virtual QMap<QString, QString> getDiagramsNames() = 0;
-		virtual QMap<QString, QString> getElementsNames() = 0;
-		virtual QList<QString> prepareParentNamesByType(QString mTypeName) = 0;//refWindow
-		virtual QList<QVariant> getElementsDataByType(QString mTypeName) = 0;//refWindow
-		virtual void activateItemOrDiagram(const qReal::Id &id, bool bl = true, bool isSetSel = true) = 0;//refWindow
-		virtual void activateItemOrDiagram(QModelIndex const &modelIndex, bool bl = true, bool isSetSel = true) = 0;//refWindow
+		virtual QList<QString> getEditorsNames() const = 0;
+		virtual QMap<QString, QString> getDiagramsNames() const = 0;
+		virtual QMap<QString, QString> getElementsNames() const = 0;
+		virtual QList<QString> prepareParentNamesByType(QString mTypeName) const = 0;//refWindow
+		virtual QList<QVariant> getElementsDataByType(QString mTypeName) const = 0;//refWindow
+		virtual void activateItemOrDiagram(const qReal::Id &id, bool bl = true, bool isSetSel = true) const = 0;//refWindow
+		virtual void activateItemOrDiagram(QModelIndex const &modelIndex, bool bl = true, bool isSetSel = true) const = 0;//refWindow
 	};
 
 //}

@@ -12,7 +12,7 @@ ControllerApi::ControllerApi(EditorManager &mgr, MainWindow &mMW, const LogicalR
 {
 }
 
-QList<QString> ControllerApi::getEditorsNames()
+QList<QString> ControllerApi::getEditorsNames() const
 {
 	QList<QString> editorNames;
 	foreach (Id editor, mEditorManager.editors()){
@@ -21,7 +21,7 @@ QList<QString> ControllerApi::getEditorsNames()
 	return editorNames;
 }
 
-QMap<QString, QString> ControllerApi::getDiagramsNames()
+QMap<QString, QString> ControllerApi::getDiagramsNames() const
 {
 	QMap<QString, QString> diagramNames;
 	foreach (Id editor, mEditorManager.editors()){
@@ -32,7 +32,7 @@ QMap<QString, QString> ControllerApi::getDiagramsNames()
 	return diagramNames;
 }
 
-QMap<QString, QString> ControllerApi::getElementsNames()
+QMap<QString, QString> ControllerApi::getElementsNames() const
 {
 	QMap<QString, QString> elementNames;
 	foreach (Id editor, mEditorManager.editors()){
@@ -45,17 +45,17 @@ QMap<QString, QString> ControllerApi::getElementsNames()
 	return elementNames;
 }
 
-void ControllerApi::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel)
+void ControllerApi::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel) const
 {
 		mMainWindow.activateItemOrDiagram(id, bl, isSetSel);
 }
 
-void ControllerApi::activateItemOrDiagram(QModelIndex const &modelIndex, bool bl, bool isSetSel)
+void ControllerApi::activateItemOrDiagram(QModelIndex const &modelIndex, bool bl, bool isSetSel) const
 {
 		mMainWindow.activateItemOrDiagram(modelIndex, bl, isSetSel);
 }
 
-QList<QString> ControllerApi::prepareParentNamesByType(QString mTypeName)
+QList<QString> ControllerApi::prepareParentNamesByType(QString mTypeName) const
 {
 	qReal::IdList idList = mLogicalRepoApi.elementsByType(mTypeName);
 	int size = idList.size();
@@ -71,7 +71,7 @@ QList<QString> ControllerApi::prepareParentNamesByType(QString mTypeName)
 	return parentNames;
 }
 
-QList<QVariant> ControllerApi::getElementsDataByType(QString mTypeName)
+QList<QVariant> ControllerApi::getElementsDataByType(QString mTypeName) const
 {
 	qReal::IdList idList = mLogicalRepoApi.elementsByType(mTypeName);
 	int size = idList.size();

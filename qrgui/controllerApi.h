@@ -22,7 +22,7 @@ namespace qrRepo{
 class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
 {
 public:
-	ControllerApi();
+	ControllerApi(qReal::EditorManager &mgr, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi);
 
 	virtual QList<QString> getEditorsNames() const;//PluginDialog
 	virtual QMap<QString, QString> getDiagramsNames() const;//PluginDialog
@@ -40,5 +40,5 @@ public:
 private:
 	qReal::MainWindow &mMainWindow;
 	qReal::EditorManager &mEditorManager;
-	qrRepo::LogicalRepoApi &mLogicalRepoApi;
+	const qrRepo::LogicalRepoApi &mLogicalRepoApi;
 };

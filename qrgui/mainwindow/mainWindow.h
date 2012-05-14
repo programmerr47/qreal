@@ -279,7 +279,7 @@ private:
 	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
-	PropertyEditorModel mPropertyModel;
+	PropertyEditorModel *mPropertyModel;
 	GesturesWidget *mGesturesWidget;
 
 	QVector<bool> mSaveListChecked;
@@ -310,7 +310,7 @@ private:
 	QMenu *mRecentProjectsMenu;
 	qReal::gui::PaletteTree *mPaletteTree;
 
-	ControllerApi mControllerApi;
+	ControllerApi *mControllerApi;
 };
 
 }
