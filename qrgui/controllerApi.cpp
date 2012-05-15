@@ -6,7 +6,7 @@ using namespace qReal;
 using namespace qrRepo;
 
 ControllerApi::ControllerApi(EditorManager &mgr, MainWindow &mMW, const LogicalRepoApi &mLogicalApi)
-	: mEditorManager(mgr)
+	: mEditorManager(&mgr)
 	, mMainWindow(mMW)
 	, mLogicalRepoApi(mLogicalApi)
 {
@@ -15,8 +15,8 @@ ControllerApi::ControllerApi(EditorManager &mgr, MainWindow &mMW, const LogicalR
 QList<QString> ControllerApi::getEditorsNames() const
 {
 	QList<QString> editorNames;
-	foreach (Id editor, mEditorManager.editors()){
-		editorNames.append(mEditorManager.friendlyName(editor));
+	foreach (Id editor, mEditorManager->editors()){
+		editorNames.append(mEditorManager->friendlyName(editor));
 	}
 	return editorNames;
 }
@@ -24,9 +24,9 @@ QList<QString> ControllerApi::getEditorsNames() const
 QMap<QString, QString> ControllerApi::getDiagramsNames() const
 {
 	QMap<QString, QString> diagramNames;
-	foreach (Id editor, mEditorManager.editors()){
-		foreach (Id diagram, mEditorManager.diagrams(editor)){
-			diagramNames.insert(mEditorManager.friendlyName(editor), mEditorManager.friendlyName(diagram));
+	foreach (Id editor, mEditorManager->editors()){
+		foreach (Id diagram, mEditorManager->diagrams(editor)){
+			diagramNames.insert(mEditorManager->friendlyName(editor), mEditorManager->friendlyName(diagram));
 		}
 	}
 	return diagramNames;
@@ -35,10 +35,10 @@ QMap<QString, QString> ControllerApi::getDiagramsNames() const
 QMap<QString, QString> ControllerApi::getElementsNames() const
 {
 	QMap<QString, QString> elementNames;
-	foreach (Id editor, mEditorManager.editors()){
-		foreach (Id diagram, mEditorManager.diagrams(editor)){
-			foreach (Id element, mEditorManager.elements(diagram)){
-				elementNames.insert(mEditorManager.friendlyName(diagram), mEditorManager.friendlyName(element));
+	foreach (Id editor, mEditorManager->editors()){
+		foreach (Id diagram, mEditorManager->diagrams(editor)){
+			foreach (Id element, mEditorManager->elements(diagram)){
+				elementNames.insert(mEditorManager->friendlyName(diagram), mEditorManager->friendlyName(element));
 			}
 		}
 	}
@@ -88,25 +88,60 @@ QList<QVariant> ControllerApi::getElementsDataByType(QString mTypeName) const
 
 QString ControllerApi::propertyDescription(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager.propertyDescription(id, propertyName);
+	return mEditorManager->propertyDescription(id, propertyName);
 }
 
 QString ControllerApi::propertyDisplayedName(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager.propertyDisplayedName(id, propertyName);
+	return mEditorManager->propertyDisplayedName(id, propertyName);
 }
 
 QStringList ControllerApi::getEnumValues(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager.getEnumValues(id, propertyName);
+	return mEditorManager->getEnumValues(id, propertyName);
 }
 
 QStringList ControllerApi::getPropertyNames(const qReal::Id &id) const
 {
-	return mEditorManager.getPropertyNames(id);
+	return mEditorManager->getPropertyNames(id);
 }
 
 QString ControllerApi::getTypeName(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager.getTypeName(id, propertyName);
+	return mEditorManager->getTypeName(id, propertyName);
+}
+
+QString ControllerApi::friendlyName(const qReal::Id &id) const
+{
+	return mEditorManager->friendlyName(id);
+}
+
+QString ControllerApi::description(const qReal::Id &id) const
+{
+	return mEditorManager->description(id);
+}
+
+QIcon ControllerApi::icon(const qReal::Id &id) const
+{
+	return mEditorManager->icon(id);
+}
+
+void ControllerApi::setEditorManager(qReal::EditorManager &editorManager)
+{
+	mEditorManager = &editorManager;
+}
+
+IdList ControllerApi::elements(const qReal::Id &id) const
+{
+	return mEditorManager->elements(id);
+}
+
+QStringList ControllerApi::paletteGroups(const qReal::Id &editor, const qReal::Id &diagram) const
+{
+	return mEditorManager->paletteGroups(editor,diagram);
+}
+
+QStringList ControllerApi::paletteGroupList(const qReal::Id &editor, const qReal::Id &diagram, const QString &group) const
+{
+	return mEditorManager->paletteGroupList(editor, diagram, group);
 }

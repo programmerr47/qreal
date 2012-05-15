@@ -60,6 +60,7 @@ MainWindow::MainWindow()
 		, mUnsavedProjectIndicator(false)
 		, mRecentProjectsLimit(5)
 		, mRecentProjectsMapper(new QSignalMapper())
+		, mEditorManagerList(NULL)
 {
 	mCodeTabManager = new QMap<EditorView*, CodeArea*>();
 
@@ -107,6 +108,10 @@ MainWindow::MainWindow()
 
 	progress->setValue(40);
 
+	//efimefim
+	mEditorManagerList = new EditorManagerList();
+	mEditorManagerList->append(new EditorManager());
+
 	initDocks();
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
@@ -117,9 +122,9 @@ MainWindow::MainWindow()
 
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
-	mModels = new models::Models(saveFile.absoluteFilePath(), mEditorManager);
+	mModels = new models::Models(saveFile.absoluteFilePath(), *mEditorManagerList->at(0));
 
-	mControllerApi = new ControllerApi(mEditorManager, *this, mModels->logicalRepoApi());
+	mControllerApi = new ControllerApi(*mEditorManagerList->at(0), *this, mModels->logicalRepoApi());
 	mPropertyModel = new PropertyEditorModel(*mControllerApi);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
@@ -262,7 +267,7 @@ MainWindow::~MainWindow()
 
 EditorManager* MainWindow::manager()
 {
-	return &mEditorManager;
+	return mEditorManagerList->at(0);
 }
 
 void MainWindow::finalClose()
@@ -292,7 +297,7 @@ void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
 				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
-				, mEditorManager);
+				, *mEditorManagerList->at(0));
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -425,7 +430,7 @@ QString MainWindow::getWorkingFile(QString const &dialogWindowTitle, bool save)
 
 bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 {
-	IdList missingPlugins = mEditorManager.checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
+	IdList missingPlugins = mEditorManagerList->at(0)->checkNeededPlugins(mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 	bool haveMissingPlugins = !missingPlugins.isEmpty();
 	bool loadingCancelled = false;
 	while (haveMissingPlugins && !loadingCancelled) {
@@ -448,7 +453,7 @@ bool MainWindow::checkPluginsAndReopen(QSplashScreen* const splashScreen)
 		}
 		else
 			loadingCancelled = true;
-		missingPlugins = mEditorManager.checkNeededPlugins(
+		missingPlugins = mEditorManagerList->at(0)->checkNeededPlugins(
 				mModels->logicalRepoApi(), mModels->graphicalRepoApi());
 		haveMissingPlugins = !missingPlugins.isEmpty();
 	}
@@ -826,10 +831,10 @@ void MainWindow::parseJavaLibraries()
 
 bool MainWindow::unloadPlugin(QString const &pluginName)
 {
-	if (mEditorManager.editors().contains(Id(pluginName))) {
-		IdList const diagrams = mEditorManager.diagrams(Id(pluginName));
+	if (mEditorManagerList->at(0)->editors().contains(Id(pluginName))) {
+		IdList const diagrams = mEditorManagerList->at(0)->diagrams(Id(pluginName));
 
-		if (!mEditorManager.unloadPlugin(pluginName)) {
+		if (!mEditorManagerList->at(0)->unloadPlugin(pluginName)) {
 			return false;
 		}
 		foreach (Id const &diagram, diagrams) {
@@ -841,12 +846,12 @@ bool MainWindow::unloadPlugin(QString const &pluginName)
 
 bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 {
-	if (!mEditorManager.loadPlugin(fileName)) {
+	if (!mEditorManagerList->at(0)->loadPlugin(fileName)) {
 		return false;
 	}
 
-	foreach (Id const &diagram, mEditorManager.diagrams(Id(pluginName))) {
-		mUi->paletteTree->addEditorElements(mEditorManager, Id(pluginName), diagram);
+	foreach (Id const &diagram, mEditorManagerList->at(0)->diagrams(Id(pluginName))) {
+		mUi->paletteTree->addEditorElements(*mEditorManagerList->at(0), Id(pluginName), diagram);
 	}
 	mUi->paletteTree->initDone();
 	return true;
@@ -854,7 +859,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 
 bool MainWindow::pluginLoaded(QString const &pluginName)
 {
-	return mEditorManager.editors().contains(Id(pluginName));
+	return mEditorManagerList->at(0)->editors().contains(Id(pluginName));
 }
 
 EditorView * MainWindow::getCurrentTab()
@@ -1013,7 +1018,7 @@ void MainWindow::setConnectActionZoomTo(QWidget* widget)
 
 void MainWindow::centerOn(Id const &id)
 {
-	if (mEditorManager.isDiagramNode(id))
+	if (mEditorManagerList->at(0)->isDiagramNode(id))
 		return;
 
 	EditorView* const view = getCurrentTab();
@@ -1095,7 +1100,7 @@ void MainWindow::openNewTab(QModelIndex const &arg)
 		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
 			Id const id = mModels->graphicalModelAssistApi().idByIndex(index);
 			Id const diagramId = Id(id.editor(), id.diagram());
-			QString const diagramName = mEditorManager.friendlyName(diagramId);
+			QString const diagramName = mEditorManagerList->at(0)->friendlyName(diagramId);
 			if (diagramName == name) {
 				mUi->paletteTree->setComboBoxIndex(i);
 				break;
@@ -1307,8 +1312,8 @@ void MainWindow::suggestToCreateDiagram()
 	int i = 0;
 	foreach(Id editor, manager()->editors()) {
 		foreach(Id diagram, manager()->diagrams(Id::loadFromString("qrm:/" + editor.editor()))) {
-			QString const diagramName = mEditorManager.editorInterface(editor.editor())->diagramName(diagram.diagram());
-			QString const diagramNodeName = mEditorManager.editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
+			QString const diagramName = mEditorManagerList->at(0)->editorInterface(editor.editor())->diagramName(diagram.diagram());
+			QString const diagramNodeName = mEditorManagerList->at(0)->editorInterface(editor.editor())->diagramNodeName(diagram.diagram());
 			if (diagramNodeName.isEmpty()) {
 				continue;
 			}

@@ -8,9 +8,12 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QComboBox>
 #include <QtGui/QVBoxLayout>
+#include <QtGui/QLabel>
+
 #include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
-#include <QtGui/QLabel>
+
+#include "../mainWindowControllerApi.h"
 
 namespace  qReal{
 namespace gui{
@@ -222,6 +225,8 @@ private:
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;
+
+    static MainWindowControllerApi *mControllerApi;
 };
 }
 }

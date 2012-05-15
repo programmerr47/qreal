@@ -276,7 +276,8 @@ private:
 
 	QCloseEvent *mCloseEvent;
 	models::Models *mModels;
-	EditorManager mEditorManager;
+	EditorManagerList *mEditorManagerList;
+//	EditorManager mEditorManager;
 	ToolPluginManager mToolManager;
 	ListenerManager *mListenerManager;
 	PropertyEditorModel *mPropertyModel;

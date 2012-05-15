@@ -17,6 +17,7 @@
 class Element;
 
 namespace qReal {
+
 	class EditorManager : public QObject
 	{
 		Q_OBJECT
@@ -83,4 +84,5 @@ namespace qReal {
 		bool isParentOf(EditorInterface const *plugin, QString const &childDiagram, QString const &child, QString const &parentDiagram, QString const &parent) const;
 	};
 
+	typedef QList<EditorManager *> EditorManagerList;
 }

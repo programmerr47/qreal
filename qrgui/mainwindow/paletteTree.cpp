@@ -10,6 +10,7 @@ using namespace qReal;
 using namespace gui;
 
 EditorManager * PaletteTree::mEditorManager = NULL;
+MainWindowControllerApi * PaletteTree::mControllerApi = NULL;
 
 PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &name
 		, const QString &description, const QIcon &icon, bool iconsOnly, QWidget *parent)
@@ -131,8 +132,8 @@ void PaletteTree::DraggableElement::mousePressEvent(QMouseEvent *event)
 
 bool PaletteTree::idLessThan(const Id &s1, const Id &s2)
 {
-	return mEditorManager->friendlyName(s1).toLower() <
-			mEditorManager->friendlyName(s2).toLower();
+    return mControllerApi->friendlyName(s1).toLower() <
+            mControllerApi->friendlyName(s2).toLower();
 }
 
 void PaletteTree::collapseChildren(QTreeWidgetItem *item)
@@ -192,9 +193,9 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 {
 	if (mItemsCountInARow == 1 || !mIconsView) {
 		foreach (const Id &element, tmpIdList) {
-			addItemType(element, mEditorManager->friendlyName(element)
-					, mEditorManager->description(element)
-					, mEditorManager->icon(element), editorTree, item);
+            addItemType(element, mControllerApi->friendlyName(element)
+                    , mControllerApi->description(element)
+                    , mControllerApi->icon(element), editorTree, item);
 		}
 		return;
 	}
@@ -204,11 +205,11 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 		int count = mItemsCountInARow;
 		for (; it != tmpIdList.end() && count-- > 0; ++it) {
 			DraggableElement *element = new DraggableElement(*it
-					, mEditorManager->friendlyName(*it)
-					, mEditorManager->description(*it)
-					, mEditorManager->icon(*it)
+                    , mControllerApi->friendlyName(*it)
+                    , mControllerApi->description(*it)
+                    , mControllerApi->icon(*it)
 					, true);
-			element->setToolTip(mEditorManager->friendlyName(*it));
+            element->setToolTip(mControllerApi->friendlyName(*it));
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}
 		field->setLayout(layout);
@@ -222,30 +223,31 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 
 void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram)
 {
-	mEditorManager = &editorManager;
-	mEditorsNames.push_back(mEditorManager->friendlyName(diagram));
+	//mEditorManager = &editorManager;
+	mControllerApi->setEditorManager(editorManager);
+	mEditorsNames.push_back(mControllerApi->friendlyName(diagram));
 
-	mComboBox->addItem(mEditorManager->friendlyName(diagram));
+	mComboBox->addItem(mControllerApi->friendlyName(diagram));
 
 	QTreeWidget *editorTree = new QTreeWidget(this);
 	editorTree->setHeaderHidden(true);
 	editorTree->setSelectionMode(QAbstractItemView::NoSelection);
 
-	IdList list = mEditorManager->elements(diagram);
+	IdList list = mControllerApi->elements(diagram);
 	qSort(list.begin(), list.end(), idLessThan);
 
 	mCategories[diagram] = mEditorsTrees.size() - 1;
 
-	if (!mEditorManager->paletteGroups(editor, diagram).empty()) {
-		foreach (const QString &group, mEditorManager->paletteGroups(editor, diagram)) {
+    if (!mControllerApi->paletteGroups(editor, diagram).empty()) {
+        foreach (const QString &group, mControllerApi->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
 			item->setText(0, group);
 
 			IdList tmpIdList;
 
-			foreach (const QString &elementName, mEditorManager->paletteGroupList(editor, diagram, group)) {
+            foreach (const QString &elementName, mControllerApi->paletteGroupList(editor, diagram, group)) {
 				foreach (const Id &element, list) {
-					if (mEditorManager->friendlyName(element) == elementName) {
+                    if (mControllerApi->friendlyName(element) == elementName) {
 						tmpIdList.append (element);
 						break;
 					}
@@ -257,15 +259,15 @@ void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &edit
 
 			editorTree->addTopLevelItem(item);
 
-			if (mSettings->value(mEditorManager->friendlyName(diagram) + group, 0).toBool()) {
+            if (mSettings->value(mControllerApi->friendlyName(diagram) + group, 0).toBool()) {
 				editorTree->expandItem(item);
 			}
 		}
 	} else {
 		foreach (const Id &element, list) {
-			addTopItemType(element, mEditorManager->friendlyName(element)
-					, mEditorManager->description(element)
-					, mEditorManager->icon(element), editorTree);
+            addTopItemType(element, mControllerApi->friendlyName(element)
+                    , mControllerApi->description(element)
+                    , mControllerApi->icon(element), editorTree);
 		}
 	}
 	editorTree->hide();
@@ -504,7 +506,8 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &e
 		recreateTrees();
 	}
 	mIconsView = isIconsView;
-	mEditorManager = &editorManager;
+    //mEditorManager = &editorManager;
+    mControllerApi->setEditorManager(editorManager);
 	mItemsCountInARow = itemsCount;
 	loadEditors(editorManager);
 	initDone();
