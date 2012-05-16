@@ -51,7 +51,7 @@ public:
 	  @param editor Editor
 	  @param diagram Diagram that corresponds to chosen editor.
 	*/
-	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
+	void addEditorElements(int editorManagerIndex, const Id &editor, const Id &diagram);
 
 	/// Initialize connection editor's combobox with slot that sets active editor.
 	void initDone();
@@ -82,7 +82,7 @@ public:
 	  @param itemsCount Items count in a row.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
-	void loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager);
+	void loadPalette(bool isIconsView, int itemsCount, int editorManagerIndex);
 	~PaletteTree();
 signals:
 	void paletteParametersChanged();
@@ -185,7 +185,7 @@ private:
 	/** Fills palette tree by editors.
 	  @param editorManager Editor manager which all editors with elements are taken from.
 	*/
-	void loadEditors(EditorManager &editorManager);
+	void loadEditors(int Index);
 
 	/// Hash table with editor ids.
 	QHash<Id, int> mCategories;

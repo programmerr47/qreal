@@ -5,18 +5,19 @@
 using namespace qReal;
 using namespace qrRepo;
 
-ControllerApi::ControllerApi(EditorManager &mgr, MainWindow &mMW, const LogicalRepoApi &mLogicalApi)
-	: mEditorManager(&mgr)
+ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW, const LogicalRepoApi &mLogicalApi)
+	: mEditorManagerList(&mgrl)
 	, mMainWindow(mMW)
 	, mLogicalRepoApi(mLogicalApi)
+	, activeEditorManagerIndex(0)
 {
 }
 
 QList<QString> ControllerApi::getEditorsNames() const
 {
 	QList<QString> editorNames;
-	foreach (Id editor, mEditorManager->editors()){
-		editorNames.append(mEditorManager->friendlyName(editor));
+	foreach (Id editor, mEditorManagerList->at(activeEditorManagerIndex)->editors()){
+		editorNames.append(mEditorManagerList->at(activeEditorManagerIndex)->friendlyName(editor));
 	}
 	return editorNames;
 }
@@ -24,9 +25,9 @@ QList<QString> ControllerApi::getEditorsNames() const
 QMap<QString, QString> ControllerApi::getDiagramsNames() const
 {
 	QMap<QString, QString> diagramNames;
-	foreach (Id editor, mEditorManager->editors()){
-		foreach (Id diagram, mEditorManager->diagrams(editor)){
-			diagramNames.insert(mEditorManager->friendlyName(editor), mEditorManager->friendlyName(diagram));
+	foreach (Id editor, mEditorManagerList->at(activeEditorManagerIndex)->editors()){
+		foreach (Id diagram, mEditorManagerList->at(activeEditorManagerIndex)->diagrams(editor)){
+			diagramNames.insert(mEditorManagerList->at(activeEditorManagerIndex)->friendlyName(editor), mEditorManagerList->at(activeEditorManagerIndex)->friendlyName(diagram));
 		}
 	}
 	return diagramNames;
@@ -35,10 +36,10 @@ QMap<QString, QString> ControllerApi::getDiagramsNames() const
 QMap<QString, QString> ControllerApi::getElementsNames() const
 {
 	QMap<QString, QString> elementNames;
-	foreach (Id editor, mEditorManager->editors()){
-		foreach (Id diagram, mEditorManager->diagrams(editor)){
-			foreach (Id element, mEditorManager->elements(diagram)){
-				elementNames.insert(mEditorManager->friendlyName(diagram), mEditorManager->friendlyName(element));
+	foreach (Id editor, mEditorManagerList->at(activeEditorManagerIndex)->editors()){
+		foreach (Id diagram, mEditorManagerList->at(activeEditorManagerIndex)->diagrams(editor)){
+			foreach (Id element, mEditorManagerList->at(activeEditorManagerIndex)->elements(diagram)){
+				elementNames.insert(mEditorManagerList->at(activeEditorManagerIndex)->friendlyName(diagram), mEditorManagerList->at(activeEditorManagerIndex)->friendlyName(element));
 			}
 		}
 	}
@@ -88,60 +89,80 @@ QList<QVariant> ControllerApi::getElementsDataByType(QString mTypeName) const
 
 QString ControllerApi::propertyDescription(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager->propertyDescription(id, propertyName);
+	return mEditorManagerList->at(activeEditorManagerIndex)->propertyDescription(id, propertyName);
 }
 
 QString ControllerApi::propertyDisplayedName(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager->propertyDisplayedName(id, propertyName);
+	return mEditorManagerList->at(activeEditorManagerIndex)->propertyDisplayedName(id, propertyName);
 }
 
 QStringList ControllerApi::getEnumValues(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager->getEnumValues(id, propertyName);
+	return mEditorManagerList->at(activeEditorManagerIndex)->getEnumValues(id, propertyName);
 }
 
 QStringList ControllerApi::getPropertyNames(const qReal::Id &id) const
 {
-	return mEditorManager->getPropertyNames(id);
+	return mEditorManagerList->at(activeEditorManagerIndex)->getPropertyNames(id);
 }
 
 QString ControllerApi::getTypeName(const qReal::Id &id, const QString &propertyName) const
 {
-	return mEditorManager->getTypeName(id, propertyName);
+	return mEditorManagerList->at(activeEditorManagerIndex)->getTypeName(id, propertyName);
 }
 
 QString ControllerApi::friendlyName(const qReal::Id &id) const
 {
-	return mEditorManager->friendlyName(id);
+	return mEditorManagerList->at(activeEditorManagerIndex)->friendlyName(id);
 }
 
 QString ControllerApi::description(const qReal::Id &id) const
 {
-	return mEditorManager->description(id);
+	return mEditorManagerList->at(activeEditorManagerIndex)->description(id);
 }
 
 QIcon ControllerApi::icon(const qReal::Id &id) const
 {
-	return mEditorManager->icon(id);
+	return mEditorManagerList->at(activeEditorManagerIndex)->icon(id);
 }
 
-void ControllerApi::setEditorManager(qReal::EditorManager &editorManager)
+/*void ControllerApi::setEditorManager(qReal::EditorManager &editorManager)
 {
-	mEditorManager = &editorManager;
+	mEditorManagerList[0] = &editorManager;
+}*/
+
+EditorManager *ControllerApi::getEditorManager(int index) const
+{
+	return mEditorManagerList->at(index);
+}
+
+void ControllerApi::setActiveEditorManagerIndex(int index)
+{
+	activeEditorManagerIndex = index;
+}
+
+IdList ControllerApi::editors() const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->editors();
+}
+
+IdList ControllerApi::diagrams(const qReal::Id &id) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->diagrams(id);
 }
 
 IdList ControllerApi::elements(const qReal::Id &id) const
 {
-	return mEditorManager->elements(id);
+	return mEditorManagerList->at(activeEditorManagerIndex)->elements(id);
 }
 
 QStringList ControllerApi::paletteGroups(const qReal::Id &editor, const qReal::Id &diagram) const
 {
-	return mEditorManager->paletteGroups(editor,diagram);
+	return mEditorManagerList->at(activeEditorManagerIndex)->paletteGroups(editor,diagram);
 }
 
 QStringList ControllerApi::paletteGroupList(const qReal::Id &editor, const qReal::Id &diagram, const QString &group) const
 {
-	return mEditorManager->paletteGroupList(editor, diagram, group);
+	return mEditorManagerList->at(activeEditorManagerIndex)->paletteGroupList(editor, diagram, group);
 }

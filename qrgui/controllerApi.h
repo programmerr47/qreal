@@ -22,7 +22,7 @@ namespace qrRepo{
 class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
 {
 public:
-	ControllerApi(qReal::EditorManager &mgr, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi);
+	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi);
 
 	virtual QList<QString> getEditorsNames() const;//PluginDialog
 	virtual QMap<QString, QString> getDiagramsNames() const;//PluginDialog
@@ -39,14 +39,20 @@ public:
 	virtual QString friendlyName(const qReal::Id &id) const; //mainwindow
 	virtual QString description(const qReal::Id &id) const; //mainwindow
 	virtual QIcon icon(const qReal::Id &id) const; //mainwindow
-	virtual void setEditorManager(qReal::EditorManager &editorManager); //mainwindow
+//	virtual void setEditorManager(qReal::EditorManager &editorManager); //mainwindow
+	virtual qReal::EditorManager* getEditorManager(int index) const; //mainwindow
+	virtual void setActiveEditorManagerIndex(int index);
+	virtual qReal::IdList editors() const; //palettetree
+	virtual qReal::IdList diagrams(const qReal::Id &id) const; //palettetree
 	virtual qReal::IdList elements(const qReal::Id &id) const; //mainwindow
 	virtual QStringList paletteGroups(const qReal::Id &editor, const qReal::Id &diagram) const; //mainwindow
 	virtual QStringList paletteGroupList(const qReal::Id &editor, const qReal::Id &diagram, const QString &group) const; //mainwindow
 
 
 private:
+	int activeEditorManagerIndex;
 	qReal::MainWindow &mMainWindow;
-	qReal::EditorManager *mEditorManager;
+	//qReal::EditorManager *mEditorManager;
+	qReal::EditorManagerList *mEditorManagerList;
 	const qrRepo::LogicalRepoApi &mLogicalRepoApi;
 };

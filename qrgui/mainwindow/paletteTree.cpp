@@ -221,10 +221,10 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 	}
 }
 
-void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram)
+void PaletteTree::addEditorElements(int editorManagerIndex, const Id &editor, const Id &diagram)
 {
 	//mEditorManager = &editorManager;
-	mControllerApi->setEditorManager(editorManager);
+	mControllerApi->setActiveEditorManagerIndex(editorManagerIndex);
 	mEditorsNames.push_back(mControllerApi->friendlyName(diagram));
 
 	mComboBox->addItem(mControllerApi->friendlyName(diagram));
@@ -422,11 +422,12 @@ void PaletteTree::setIconsView(bool iconsView)
 	mIconsView = iconsView;
 }
 
-void PaletteTree::loadEditors(EditorManager &editorManager)
+void PaletteTree::loadEditors(int Index)
 {
-	foreach (Id const editor, editorManager.editors()) {
-		foreach (Id const diagram, editorManager.diagrams(editor)) {
-			addEditorElements(editorManager, editor, diagram);
+	mControllerApi->setActiveEditorManagerIndex(Index);
+	foreach (Id const editor, mControllerApi->editors()) {
+		foreach (Id const diagram, mControllerApi->diagrams(editor)) {
+			addEditorElements(0, editor, diagram);
 		}
 	}
 	const int index = mSettings->value("CurrentIndex", 0).toInt();
@@ -494,22 +495,21 @@ int PaletteTree::maxItemsCountInARow() const
 
 void PaletteTree::changeRepresentation()
 {
-	loadPalette(!mIconsView, mItemsCountInARow, *mEditorManager);
+	loadPalette(!mIconsView, mItemsCountInARow, 0);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	emit paletteParametersChanged();
 }
 
-void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager)
+void PaletteTree::loadPalette(bool isIconsView, int itemsCount, int editorManagerIndex)
 {
 	if (mEditorManager) {
 		recreateTrees();
 	}
 	mIconsView = isIconsView;
-    //mEditorManager = &editorManager;
-    mControllerApi->setEditorManager(editorManager);
+	mControllerApi->setActiveEditorManagerIndex(0);
 	mItemsCountInARow = itemsCount;
-	loadEditors(editorManager);
+	loadEditors(0);
 	initDone();
 	setComboBoxIndex();
 }

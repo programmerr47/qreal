@@ -15,7 +15,11 @@ public:
 	virtual QString friendlyName(const qReal::Id &id) const = 0;
 	virtual QString description(const qReal::Id &id) const = 0;
 	virtual QIcon icon(const qReal::Id &id) const = 0;
-	virtual void setEditorManager(qReal::EditorManager &editorManager) = 0;
+//	virtual void setEditorManager(qReal::EditorManager &editorManager) = 0;
+	virtual void setActiveEditorManagerIndex(int index) = 0;
+	virtual qReal::EditorManager* getEditorManager(int index) const = 0;
+	virtual qReal::IdList editors() const = 0;
+	virtual qReal::IdList diagrams(const qReal::Id &id) const = 0;
 	virtual qReal::IdList elements(const qReal::Id &id) const = 0;
 	virtual QStringList paletteGroups(const qReal::Id &editor, const qReal::Id &diagram) const = 0;
 	virtual QStringList paletteGroupList(const qReal::Id &editor, const qReal::Id &diagram, const QString &group) const = 0;

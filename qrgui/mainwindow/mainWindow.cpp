@@ -124,7 +124,7 @@ MainWindow::MainWindow()
 		mSaveFile = saveFile.absoluteFilePath();
 	mModels = new models::Models(saveFile.absoluteFilePath(), *mEditorManagerList->at(0));
 
-	mControllerApi = new ControllerApi(*mEditorManagerList->at(0), *this, mModels->logicalRepoApi());
+	mControllerApi = new ControllerApi(*mEditorManagerList, *this, mModels->logicalRepoApi());
 	mPropertyModel = new PropertyEditorModel(*mControllerApi);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
@@ -297,7 +297,7 @@ void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
 				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
-				, *mEditorManagerList->at(0));
+								  , 0);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -851,7 +851,7 @@ bool MainWindow::loadPlugin(QString const &fileName, QString const &pluginName)
 	}
 
 	foreach (Id const &diagram, mEditorManagerList->at(0)->diagrams(Id(pluginName))) {
-		mUi->paletteTree->addEditorElements(*mEditorManagerList->at(0), Id(pluginName), diagram);
+		mUi->paletteTree->addEditorElements(0, Id(pluginName), diagram);
 	}
 	mUi->paletteTree->initDone();
 	return true;
