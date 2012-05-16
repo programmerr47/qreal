@@ -51,7 +51,7 @@ public:
 	  @param editor Editor
 	  @param diagram Diagram that corresponds to chosen editor.
 	*/
-	void addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram);
+	void addEditorElements(EditorManager *editorManager, const Id &editor, const Id &diagram);
 
 	/// Initialize connection editor's combobox with slot that sets active editor.
 	void initDone();

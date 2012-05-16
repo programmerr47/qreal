@@ -221,7 +221,7 @@ void PaletteTree::addItemsRow(IdList const &tmpIdList, QTreeWidget *editorTree, 
 	}
 }
 
-void PaletteTree::addEditorElements(EditorManager &editorManager, const Id &editor, const Id &diagram)
+void PaletteTree::addEditorElements(EditorManager *editorManager, const Id &editor, const Id &diagram)
 {
 	//mEditorManager = &editorManager;
 	mControllerApi->setEditorManager(editorManager);
@@ -500,14 +500,19 @@ void PaletteTree::changeRepresentation()
 	emit paletteParametersChanged();
 }
 
-void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager &editorManager)
+void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManager *editorManager)
 {
 	if (mEditorManager) {
 		recreateTrees();
 	}
 	mIconsView = isIconsView;
-    //mEditorManager = &editorManager;
-    mControllerApi->setEditorManager(editorManager);
+	/*
+	int i = 5;
+	EditorManager *testEditorManager = new editorManager();
+	QString a = testEditorManager->description(NULL);
+	*/
+	mEditorManager = &editorManager;
+	mControllerApi->setEditorManager(editorManager);
 	mItemsCountInARow = itemsCount;
 	loadEditors(editorManager);
 	initDone();

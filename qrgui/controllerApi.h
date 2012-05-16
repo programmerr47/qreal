@@ -39,7 +39,7 @@ public:
 	virtual QString friendlyName(const qReal::Id &id) const; //mainwindow
 	virtual QString description(const qReal::Id &id) const; //mainwindow
 	virtual QIcon icon(const qReal::Id &id) const; //mainwindow
-	virtual void setEditorManager(qReal::EditorManager &editorManager); //mainwindow
+	virtual void setEditorManager(qReal::EditorManager *editorManager); //mainwindow
 	virtual qReal::IdList elements(const qReal::Id &id) const; //mainwindow
 	virtual QStringList paletteGroups(const qReal::Id &editor, const qReal::Id &diagram) const; //mainwindow
 	virtual QStringList paletteGroupList(const qReal::Id &editor, const qReal::Id &diagram, const QString &group) const; //mainwindow

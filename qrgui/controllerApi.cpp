@@ -126,9 +126,9 @@ QIcon ControllerApi::icon(const qReal::Id &id) const
 	return mEditorManager->icon(id);
 }
 
-void ControllerApi::setEditorManager(qReal::EditorManager &editorManager)
+void ControllerApi::setEditorManager(EditorManager *editorManager)
 {
-	mEditorManager = &editorManager;
+	mEditorManager = editorManager;
 }
 
 IdList ControllerApi::elements(const qReal::Id &id) const
