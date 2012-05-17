@@ -9,7 +9,7 @@
 using namespace qReal;
 using namespace gui;
 
-EditorManager * PaletteTree::mEditorManager = NULL;
+//EditorManager * PaletteTree::mEditorManager = NULL;
 MainWindowControllerApi * PaletteTree::mControllerApi = NULL;
 
 PaletteTree::DraggableElement::DraggableElement(const Id &id, const QString &name
@@ -241,6 +241,7 @@ void PaletteTree::addEditorElements(int editorManagerIndex, const Id &editor, co
     if (!mControllerApi->paletteGroups(editor, diagram).empty()) {
         foreach (const QString &group, mControllerApi->paletteGroups(editor, diagram)) {
 			QTreeWidgetItem *item = new QTreeWidgetItem;
+			//hotfix 0 in the next line is a plug.
 			item->setText(0, group);
 
 			IdList tmpIdList;
@@ -495,18 +496,19 @@ int PaletteTree::maxItemsCountInARow() const
 
 void PaletteTree::changeRepresentation()
 {
-	loadPalette(!mIconsView, mItemsCountInARow, 0);
+	loadPalette(!mIconsView, mItemsCountInARow, mControllerApi, 0);
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	emit paletteParametersChanged();
 }
 
-void PaletteTree::loadPalette(bool isIconsView, int itemsCount, int editorManagerIndex)
+void PaletteTree::loadPalette(bool isIconsView, int itemsCount, MainWindowControllerApi* controllerApi ,int editorManagerIndex)
 {
-	if (mEditorManager) {
+	if (mControllerApi) {
 		recreateTrees();
 	}
 	mIconsView = isIconsView;
+	mControllerApi = controllerApi;
 	mControllerApi->setActiveEditorManagerIndex(0);
 	mItemsCountInARow = itemsCount;
 	loadEditors(0);

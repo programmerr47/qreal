@@ -297,7 +297,7 @@ void MainWindow::loadPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation", 0).toBool()
 				, SettingsManager::value("PaletteIconsInARowCount", 3).toInt()
-								  , 0);
+								  ,mControllerApi, 0);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)

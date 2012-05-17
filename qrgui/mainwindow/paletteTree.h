@@ -10,7 +10,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QLabel>
 
-#include "../pluginManager/editorManager.h"
+//#include "../pluginManager/editorManager.h"
 #include "../../qrkernel/ids.h"
 
 #include "../mainWindowControllerApi.h"
@@ -47,7 +47,8 @@ public:
 			, QIcon const &icon,QTreeWidget *tree);
 
 	/** Adds all editor's elements to appropriate tree.
-	  @param editorManager Editor manager which all editors with elements are taken from.
+	  editorManager Editor manager which all editors with elements are taken from.
+	  @param editorManagerIndex Index of active editor Manager
 	  @param editor Editor
 	  @param diagram Diagram that corresponds to chosen editor.
 	*/
@@ -80,9 +81,11 @@ public:
 	/** Load palette and set some representation.
 	  @param isIconsView This variable corresponds to representation.
 	  @param itemsCount Items count in a row.
-	  @param editorManager Editor manager which all editors with elements are taken from.
+	   editorManager Editor manager which all editors with elements are taken from.
+	  @param controllerApi which contains editor managers
+	  @param editorManagerIndex Index of active Editor manager
 	*/
-	void loadPalette(bool isIconsView, int itemsCount, int editorManagerIndex);
+	void loadPalette(bool isIconsView, int itemsCount, MainWindowControllerApi* controllerApi, int editorManagerIndex);
 	~PaletteTree();
 signals:
 	void paletteParametersChanged();
