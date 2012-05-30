@@ -72,4 +72,5 @@ include (textEditor/textEditor.pri)
 HEADERS += \
     controllerApi.h \
     dialogControllerApi.h \
-    mainWindowControllerApi.h
+    mainWindowControllerApi.h \
+    gesturesControllerApi.h
