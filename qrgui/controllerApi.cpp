@@ -166,3 +166,9 @@ QStringList ControllerApi::paletteGroupList(const qReal::Id &editor, const qReal
 {
 	return mEditorManagerList->at(activeEditorManagerIndex)->paletteGroupList(editor, diagram, group);
 }
+
+QString ControllerApi::mouseGesture(const qReal::Id &id) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->mouseGesture(id);
+}
+

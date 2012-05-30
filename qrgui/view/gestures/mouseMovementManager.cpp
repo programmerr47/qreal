@@ -9,14 +9,14 @@ const QString pointDelimeter = " : ";
 const QString pathDelimeter = " | ";
 
 
-MouseMovementManager::MouseMovementManager(QList<qReal::Id> elements, qReal::EditorManager *editorManager
-		, GesturesPainterInterface *gesturesPaintManager)
+MouseMovementManager::MouseMovementManager(qReal::Id diagram, qReal::MainWindow *mWindow
+		/*, GesturesPainterInterface *gesturesPaintManager*/)
 {
+	mControllerApi = mWindow->getControllerApi();
 	mGesturesManager = new MixedGesturesManager();
 	mKeyManager = &mKeyStringManager;
-	mEditorManager = editorManager;
-	mGesturesPaintMan = gesturesPaintManager;
-	setElements(elements);
+	mGesturesPaintMan = mWindow->gesturesPainter();
+	setElements(mControllerApi->elements(diagram));
 }
 
 MouseMovementManager::~MouseMovementManager()
@@ -34,7 +34,7 @@ void MouseMovementManager::drawIdealPath()
 	QString currentElement = mGesturesPaintMan->currentElement();
 	foreach (qReal::Id element, mElements) {
 		if (element.element() == currentElement) {
-			QString path = mEditorManager->mouseGesture(element);
+			//QString path = mEditorManager->mouseGesture(element);
 			//mGesturesPaintMan->draw(stringToPath(path));
 		}
 	}
@@ -67,7 +67,7 @@ void MouseMovementManager::setElements(const QList<qReal::Id> &elements)
 {
 	QMap<QString, PathVector> gestures;
 	foreach (qReal::Id element, elements) {
-		QString pathStr = mEditorManager->mouseGesture(element);
+		QString pathStr = mControllerApi->mouseGesture(element);
 		if (!pathStr.isEmpty()) {
 			PathVector path = stringToPath(pathStr);
 			gestures.insert(element.toString(), path);

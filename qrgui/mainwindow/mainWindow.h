@@ -81,6 +81,8 @@ public:
 	virtual bool loadPlugin(QString const &fileName, QString const &pluginName);
 	virtual bool pluginLoaded(QString const &pluginName);
 
+	ControllerApi *getControllerApi() const; //TODO refactor  -choose appropriate position
+
 signals:
 	void gesturesShowed();
 	void currentIdealGestureChanged();

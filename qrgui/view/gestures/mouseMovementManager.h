@@ -3,7 +3,6 @@
 #include "keyManagerInterface.h"
 #include "keyManager.h"
 #include "../../../qrkernel/ids.h"
-#include "../../pluginManager/editorManager.h"
 #include "../../mainwindow/gesturesPainterInterface.h"
 #include "abstractRecognizer.h"
 #include <QPointF>
@@ -13,13 +12,14 @@
 #include <QString>
 #include <QMap>
 
+#include "../mainwindow/mainWindow.h"
+
+#include "../gesturesControllerApi.h"
 
 class MouseMovementManager
 {
 public:
-	MouseMovementManager(QList<qReal::Id> elements,
-						 qReal::EditorManager *editorManager,
-						 GesturesPainterInterface *gesturesPaintManager);
+	MouseMovementManager(qReal::Id diagram, qReal::MainWindow *mWindow);
 
 	~MouseMovementManager();
 
@@ -46,7 +46,8 @@ private:
 	PathVector mPath;
 	IKeyManager *mKeyManager;
 	KeyManager mKeyStringManager;
-	qReal::EditorManager *mEditorManager;
+	//qReal::EditorManager *mEditorManager;
+	GesturesControllerApi *mControllerApi;
 	QList<qReal::Id> mElements;
 	QPointF mCentre;
 	GesturesPainterInterface *mGesturesPaintMan;

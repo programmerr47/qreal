@@ -6,6 +6,7 @@
 #include <QtCore/QVariant>
 
 #include "dialogControllerApi.h"
+#include "gesturesControllerApi.h"
 #include "mainWindowControllerApi.h"
 
 //#include "../pluginManager/editorManager.h"
@@ -19,7 +20,7 @@ namespace qrRepo{
 	class LogicalRepoApi;
 }
 
-class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
+class ControllerApi : public DialogControllerApi, public MainWindowControllerApi, public GesturesControllerApi
 {
 public:
 	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi);
@@ -44,9 +45,11 @@ public:
 	virtual void setActiveEditorManagerIndex(int index);
 	virtual qReal::IdList editors() const; //palettetree
 	virtual qReal::IdList diagrams(const qReal::Id &id) const; //palettetree
-	virtual qReal::IdList elements(const qReal::Id &id) const; //mainwindow
+	virtual qReal::IdList elements(const qReal::Id &id) const; //mainwindow, mouse movement manager
 	virtual QStringList paletteGroups(const qReal::Id &editor, const qReal::Id &diagram) const; //mainwindow
 	virtual QStringList paletteGroupList(const qReal::Id &editor, const qReal::Id &diagram, const QString &group) const; //mainwindow
+	virtual QString mouseGesture(const qReal::Id &id) const;//mouse movement manager
+
 
 
 private:

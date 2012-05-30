@@ -1883,3 +1883,8 @@ void MainWindow::changePaletteRepresentation()
 		loadPlugins();
 	}
 }
+
+ControllerApi* MainWindow::getControllerApi() const
+{
+	return mControllerApi;
+}
