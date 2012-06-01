@@ -8,6 +8,8 @@
 #include "gestures/mouseMovementManager.h"
 
 #include "editorViewMVIface.h"
+
+#include "../viewControllerApi.h"
 //#include "editorView.h"
 //#include "../mainwindow/mainWindow.h"
 
@@ -159,6 +161,7 @@ private:
 	qReal::EditorView *mView;
 
 	qReal::MainWindow *mWindow;
+	ViewControllerApi *mControllerApi;
 
 	QPointF mPrevPosition;
 	QPointF mCurrentMousePos;

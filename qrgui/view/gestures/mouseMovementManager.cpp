@@ -12,6 +12,8 @@ const QString pathDelimeter = " | ";
 MouseMovementManager::MouseMovementManager(qReal::Id diagram, qReal::MainWindow *mWindow
 		/*, GesturesPainterInterface *gesturesPaintManager*/)
 {
+//efimefim передавать ли тут в явном виде 2 параметра
+//апи и маинвиндоу (может потом будут QrKernelApi и QrGuiApi?)
 	mControllerApi = mWindow->getControllerApi();
 	mGesturesManager = new MixedGesturesManager();
 	mKeyManager = &mKeyStringManager;

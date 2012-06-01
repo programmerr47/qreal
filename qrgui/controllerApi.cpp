@@ -172,3 +172,32 @@ QString ControllerApi::mouseGesture(const qReal::Id &id) const
 	return mEditorManagerList->at(activeEditorManagerIndex)->mouseGesture(id);
 }
 
+IdList ControllerApi::getContainedTypes(const Id &id) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->getContainedTypes(id);
+}
+
+bool ControllerApi::isParentOf(Id const &child, Id const &parent) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->isParentOf(child, parent);
+}
+
+QStringList ControllerApi::getAllChildrenTypesOf(Id const &parent) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->getAllChildrenTypesOf(parent);
+}
+
+Element* ControllerApi::graphicalObject(Id const &id) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->graphicalObject(id);
+}
+
+IdList ControllerApi::getUsedTypes(const Id &id) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->getUsedTypes(id);
+}
+
+IdList ControllerApi::getConnectedTypes(const Id &id) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->getConnectedTypes(id);
+}

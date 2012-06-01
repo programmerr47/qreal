@@ -20,6 +20,7 @@ EditorViewScene::EditorViewScene(QObject *parent)
 		, mRightButtonPressed(false)
 		, mHighlightNode(NULL)
 		, mWindow(NULL)
+		, mControllerApi(NULL)
 		, mPrevParent(0)
 		, mMouseMovementManager(NULL)
 		, mActionSignalMapper(new QSignalMapper(this))
@@ -99,7 +100,6 @@ void EditorViewScene::initMouseMoveManager()
 	}
 	delete mMouseMovementManager;
 
-	//QList<qReal::Id> elements = mWindow->manager()->elements(diagram);
 	mMouseMovementManager = new MouseMovementManager(diagram, mWindow);
 	connect(mWindow, SIGNAL(currentIdealGestureChanged()), this, SLOT(drawIdealGesture()));
 	connect(mWindow, SIGNAL(gesturesShowed()), this, SLOT(printElementsOfRootDiagram()));
@@ -293,15 +293,17 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 	}
 }
 
+//на исправление
 bool EditorViewScene::canBeContainedBy(qReal::Id const &container, qReal::Id const &candidate) const
 {
 	bool allowed = false;
-	foreach (qReal::Id type, mWindow->manager()->getContainedTypes(container.type())){
-		allowed = allowed || mWindow->manager()->isParentOf(candidate, type);
+	foreach (qReal::Id type, mControllerApi->getContainedTypes(container.type())){
+		allowed = allowed || mControllerApi->isParentOf(candidate, type);
 	}
 	return allowed;
 }
 
+//на исправление - используется EditorManager в MainWindow
 int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPointF const &scenePos)
 {
 	edge->setSelected(true);
@@ -326,17 +328,17 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node, QPoint
 		// and vice versa
 
 		QStringList targets;
-		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.first)) {
-			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.second);
+		if (mControllerApi->isParentOf(node->id(), pEdge.first.first)) {
+			targets << mControllerApi->getAllChildrenTypesOf(pEdge.first.second);
 		}
 
-		if (mWindow->manager()->isParentOf(node->id(), pEdge.first.second)) {
-			targets << mWindow->manager()->getAllChildrenTypesOf(pEdge.first.first);
+		if (mControllerApi->isParentOf(node->id(), pEdge.first.second)) {
+			targets << mControllerApi->getAllChildrenTypesOf(pEdge.first.first);
 		}
 
 		foreach (QString target, targets.toSet()) { // QSet is used to remove duplicates
 			Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
-			QAction *element = new QAction(mWindow->manager()->friendlyName(id), createElemMenu);
+			QAction *element = new QAction(mControllerApi->friendlyName(id), createElemMenu);
 			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);
 			QObject::connect(element,SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
@@ -383,7 +385,7 @@ qReal::Id EditorViewScene::createElement(const QString &str, QPointF const &scen
 	QString mimeType = QString("application/x-real-uml-data");
 	QString uuid = objectId.toString();
 	QString pathToItem = Id::rootId().toString();
-	QString name = "(" + mWindow->manager()->friendlyName(typeId) + ")";
+	QString name = "(" + mControllerApi->friendlyName(typeId) + ")";
 	QPointF pos = QPointF(0, 0);
 	bool isFromLogicalModel = false;
 	stream << uuid;
@@ -421,7 +423,7 @@ void EditorViewScene::createElement(const QMimeData *mimeData, QPointF const &sc
 	Id id = Id::loadFromString(uuid);
 
 	// if element is node then we should look for parent for him
-	Element *e = mWindow->manager()->graphicalObject(id);
+	Element *e = mControllerApi->graphicalObject(id);
 	if (dynamic_cast<NodeElement*>(e)) { // check if e is node
 		foreach (QGraphicsItem *item, items(scenePos)) {
 			NodeElement *el = dynamic_cast<NodeElement*>(item);
@@ -598,7 +600,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 		// menu items "connect to"
 		// TODO: move to elements, they can call the model and API themselves
 		createAddConnectionMenu(element, contextMenu, tr("Add connection")
-				, mWindow->manager()->getConnectedTypes(element->id().type())
+				, mControllerApi->getConnectedTypes(element->id().type())
 				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingConnections(element->logicalId())
 				, mMVIface->logicalAssistApi()->diagramsAbleToBeConnectedTo(element->logicalId())
 				, SLOT(connectActionTriggered())
@@ -611,7 +613,7 @@ void EditorViewScene::createConnectionSubmenus(QMenu &contextMenu, Element const
 				);
 
 		createAddConnectionMenu(element, contextMenu, tr("Add usage")
-				, mWindow->manager()->getUsedTypes(element->id().type())
+				, mControllerApi->getUsedTypes(element->id().type())
 				, mMVIface->logicalAssistApi()->logicalRepoApi().outgoingUsages(element->logicalId())
 				, mMVIface->logicalAssistApi()->diagramsAbleToBeUsedIn(element->logicalId())
 				, SLOT(addUsageActionTriggered())
@@ -875,6 +877,7 @@ qReal::Id EditorViewScene::rootItemId() const
 void EditorViewScene::setMainWindow(qReal::MainWindow *mainWindow)
 {
 	mWindow = mainWindow;
+	mControllerApi = mainWindow->getControllerApi();
 	connect(mWindow, SIGNAL(rootDiagramChanged()), this, SLOT(initMouseMoveManager()));
 	//	connect(this, SIGNAL(elementCreated(qReal::Id)), mainWindow->listenerManager(), SIGNAL(objectCreated(qReal::Id)));
 	//	connect(mActionSignalMapper, SIGNAL(mapped(QString)), mainWindow->listenerManager(), SIGNAL(contextMenuActionTriggered(QString)));

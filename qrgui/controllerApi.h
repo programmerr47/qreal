@@ -8,6 +8,7 @@
 #include "dialogControllerApi.h"
 #include "gesturesControllerApi.h"
 #include "mainWindowControllerApi.h"
+#include "viewControllerApi.h"
 
 //#include "../pluginManager/editorManager.h"
 
@@ -20,7 +21,8 @@ namespace qrRepo{
 	class LogicalRepoApi;
 }
 
-class ControllerApi : public DialogControllerApi, public MainWindowControllerApi, public GesturesControllerApi
+class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
+		, public GesturesControllerApi, public ViewControllerApi
 {
 public:
 	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi);
@@ -37,7 +39,7 @@ public:
 	virtual QStringList getEnumValues(const qReal::Id &id, const QString &propertyName) const;//PropertyEditorModel
 	virtual QStringList getPropertyNames(const qReal::Id &id) const;//PropertyEditorModel
 	virtual QString getTypeName(const qReal::Id &id, const QString &propertyName) const;//PropertyEditorModel
-	virtual QString friendlyName(const qReal::Id &id) const; //mainwindow
+	virtual QString friendlyName(const qReal::Id &id) const; //mainwindow, editorViewScene
 	virtual QString description(const qReal::Id &id) const; //mainwindow
 	virtual QIcon icon(const qReal::Id &id) const; //mainwindow
 //	virtual void setEditorManager(qReal::EditorManager &editorManager); //mainwindow
@@ -49,8 +51,12 @@ public:
 	virtual QStringList paletteGroups(const qReal::Id &editor, const qReal::Id &diagram) const; //mainwindow
 	virtual QStringList paletteGroupList(const qReal::Id &editor, const qReal::Id &diagram, const QString &group) const; //mainwindow
 	virtual QString mouseGesture(const qReal::Id &id) const;//mouse movement manager
-
-
+	virtual qReal::IdList getContainedTypes(const qReal::Id &id) const; //editorViewScene
+	virtual bool isParentOf(qReal::Id const &child, qReal::Id const &parent) const; //editorViewScene
+	virtual QStringList getAllChildrenTypesOf(qReal::Id const &parent) const; //editorViewScene
+	virtual Element* graphicalObject(qReal::Id const &id) const; //editorViewScene
+	virtual qReal::IdList getUsedTypes(const qReal::Id &id) const; //editorViewScene
+	virtual qReal::IdList getConnectedTypes(const qReal::Id &id) const; //editorViewScene
 
 private:
 	int activeEditorManagerIndex;
