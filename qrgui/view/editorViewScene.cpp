@@ -537,10 +537,10 @@ void EditorViewScene::keyPressEvent(QKeyEvent *event)
 void EditorViewScene::createGoToSubmenu(QMenu * const goToMenu, QString const &name, qReal::IdList const &ids) const
 {
 	QMenu *menu = goToMenu->addMenu(name);
-	foreach (Id element, ids) {
-		QAction *action = menu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(element));
+	foreach (Id elementId, ids) {
+		QAction *action = menu->addAction(mMVIface->logicalAssistApi()->logicalRepoApi().name(elementId));
 		connect(action, SIGNAL(triggered()), SLOT(goToActionTriggered()));
-		action->setData(element.toVariant());
+		action->setData(elementId.toVariant());
 	}
 }
 

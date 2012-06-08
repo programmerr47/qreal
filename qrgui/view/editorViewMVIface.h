@@ -13,8 +13,8 @@ class Element;
 namespace qReal {
 
 namespace models {
-class GraphicalModelAssistApi;
-class LogicalModelAssistApi;
+	class GraphicalModelAssistApi;
+	class LogicalModelAssistApi;
 }
 class EditorView;
 

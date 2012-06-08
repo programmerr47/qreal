@@ -1,6 +1,8 @@
 #include "controllerApi.h"
 
-#include "../mainwindow/mainWindow.h"
+#include "mainwindow/mainWindow.h"
+#include "models/graphicalModelAssistApi.h"
+#include "models/logicalModelAssistApi.h"
 
 using namespace qReal;
 using namespace qrRepo;
@@ -10,6 +12,8 @@ ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW, const Log
 	, mMainWindow(mMW)
 	, mLogicalRepoApi(mLogicalApi)
 	, activeEditorManagerIndex(0)
+	, mGraphicalApi(NULL)
+	, mLogicalApi(NULL)
 {
 }
 
@@ -201,3 +205,111 @@ IdList ControllerApi::getConnectedTypes(const Id &id) const
 {
 	return mEditorManagerList->at(activeEditorManagerIndex)->getConnectedTypes(id);
 }
+
+bool ControllerApi::hasGraphicalAssistApi() const
+{
+	return (bool)mGraphicalApi;
+}
+
+bool ControllerApi::graphicalHasRootDiagrams() const
+{
+	return mGraphicalApi->hasRootDiagrams();
+}
+
+void ControllerApi::graphicalStackBefore(const Id &element, const Id &sibling) const
+{
+	mGraphicalApi->stackBefore(element, sibling);
+}
+
+qReal::Id ControllerApi::graphicalCreateElement(const Id &parent, const Id &id,
+											bool isFromLogicalModel, const QString &name, const QPointF &position)
+{
+	return mGraphicalApi->createElement(parent, id, isFromLogicalModel, name, position);
+}
+
+void ControllerApi::graphicalSetTo(const Id &elem, const Id &newValue)
+{
+	mGraphicalApi->setTo(elem, newValue);
+}
+
+void ControllerApi::graphicalSetFrom(const Id &elem, const Id &newValue)
+{
+	mGraphicalApi->setFrom(elem, newValue);
+}
+
+QString ControllerApi::name(const Id &id) const
+{
+	return mLogicalApi->logicalRepoApi().name(id);
+}
+
+qReal::IdList ControllerApi::logicalElements(const Id &type) const
+{
+	return mLogicalApi->logicalRepoApi().logicalElements(type);
+}
+
+qReal::Id ControllerApi::findElementByType(const QString &type) const
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->findElementByType(type);
+}
+
+qReal::IdList ControllerApi::outgoingConnections(const Id &id) const
+{
+	return mLogicalApi->logicalRepoApi().outgoingConnections(id);
+}
+
+qReal::IdList ControllerApi::incomingConnections(const Id &id) const
+{
+	return mLogicalApi->logicalRepoApi().incomingConnections(id);
+}
+
+qReal::IdList ControllerApi::diagramsAbleToBeConnectedTo(const Id &element) const
+{
+	return mLogicalApi->diagramsAbleToBeConnectedTo(element);
+}
+
+qReal::IdList ControllerApi::diagramsAbleToBeUsedIn(const Id &element) const
+{
+	return mLogicalApi->diagramsAbleToBeUsedIn(element);
+}
+
+qReal::IdList ControllerApi::outgoingUsages(const Id &id) const
+{
+	return mLogicalApi->logicalRepoApi().outgoingUsages(id);
+}
+
+qReal::IdList ControllerApi::incomingUsages(const Id &id) const
+{
+	return mLogicalApi->logicalRepoApi().incomingUsages(id);
+}
+
+void ControllerApi::createConnected(const Id &sourceElement, const Id &elementType) const
+{
+	mLogicalApi->createConnected(sourceElement, elementType);
+}
+
+void ControllerApi::connect(const Id &source, const Id &destination)
+{
+	mLogicalApi->connect(source, destination);
+}
+
+void ControllerApi::disconnect(const Id &source, const Id &destination)
+{
+	mLogicalApi->disconnect(source, destination);
+}
+
+void ControllerApi::addUsage(const Id &source, const Id &destination)
+{
+	mLogicalApi->addUsage(source, destination);
+}
+
+void ControllerApi::deleteUsage(const Id &source, const Id &destination)
+{
+	mLogicalApi->deleteUsage(source, destination);
+}
+
+void ControllerApi::createUsed(const Id &sourceElement, const Id &elementType)
+{
+	mLogicalApi->createUsed(sourceElement, elementType);
+}
+
+

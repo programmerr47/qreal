@@ -5,12 +5,12 @@
 
 #pragma once
 
-#include <QKeyEvent>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsSceneHoverEvent>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QGraphicsScene>
+#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QtGui/QGraphicsSceneHoverEvent>
 #include <QtGui/QWidget>
-#include <QList>
+#include <QtCore/QList>
 
 #include "sdfRenderer.h"
 #include "element.h"
