@@ -7,13 +7,15 @@
 using namespace qReal;
 using namespace qrRepo;
 
-ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW, const LogicalRepoApi &mLogicalApi)
+ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW, const LogicalRepoApi &mLogicalApi,
+							 qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
+							 qReal::models::LogicalModelAssistApi *logicalAssistApi)
 	: mEditorManagerList(&mgrl)
 	, mMainWindow(mMW)
 	, mLogicalRepoApi(mLogicalApi)
 	, activeEditorManagerIndex(0)
-	, mGraphicalApi(NULL)
-	, mLogicalApi(NULL)
+	, mGraphicalApi(graphicalAssistApi)
+	, mLogicalApi(logicalAssistApi)
 {
 }
 

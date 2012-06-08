@@ -25,7 +25,9 @@ class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
 		, public GesturesControllerApi, public ViewControllerApi
 {
 public:
-	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi);
+	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi,
+				  qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
+				  qReal::models::LogicalModelAssistApi *logicalAssistApi);
 
 	virtual QList<QString> getEditorsNames() const;//PluginDialog
 	virtual QMap<QString, QString> getDiagramsNames() const;//PluginDialog

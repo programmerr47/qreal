@@ -42,6 +42,8 @@ public:
 
 	virtual qReal::Id rootItemId() const;
 	void setMainWindow(qReal::MainWindow *mainWindow);
+	void setControllerApi(ViewControllerApi *controllerApi);
+	void setMVIface(qReal::EditorViewMViface *MVIface);
 	qReal::MainWindow *mainWindow() const;
 	void setEnabled(bool enabled);
 
