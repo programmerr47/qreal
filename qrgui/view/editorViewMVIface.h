@@ -1,8 +1,6 @@
 #pragma once
 
 #include <QAbstractItemView>
-#include "../models/graphicalModelAssistApi.h"
-#include "../models/logicalModelAssistApi.h"
 
 class QGraphicsItem;
 
@@ -55,8 +53,6 @@ private:
 
 	EditorViewScene *mScene;
 	qReal::EditorView *mView;
-	models::GraphicalModelAssistApi *mGraphicalAssistApi;
-	models::LogicalModelAssistApi *mLogicalAssistApi;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;

@@ -8,6 +8,7 @@
 #include "dialogControllerApi.h"
 #include "gesturesControllerApi.h"
 #include "mainWindowControllerApi.h"
+#include "elementControllerApi.h"
 #include "viewControllerApi.h"
 
 //#include "../pluginManager/editorManager.h"
@@ -23,6 +24,7 @@ namespace qrRepo{
 
 class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
 		, public GesturesControllerApi, public ViewControllerApi
+		, public ElementControllerApi
 {
 public:
 	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi,

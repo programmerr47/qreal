@@ -37,8 +37,8 @@ public:
 	virtual void updateData();
 
 	virtual qReal::Id id() const;
-	virtual qReal::Id logicalId() const;
-	virtual QString name() const;
+	virtual qReal::Id logicalId() const;//logical
+	virtual QString name() const;//logical
 
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node

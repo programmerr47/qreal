@@ -74,4 +74,5 @@ HEADERS += \
     dialogControllerApi.h \
     mainWindowControllerApi.h \
     gesturesControllerApi.h \
-    viewControllerApi.h
+    viewControllerApi.h \
+    elementControllerApi.h
