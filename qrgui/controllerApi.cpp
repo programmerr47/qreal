@@ -345,6 +345,71 @@ void ControllerApi::setPropertyByRoleName(qReal::Id const &elem, QVariant const 
 	mLogicalApi->setPropertyByRoleName(elem, newValue, roleName);
 }
 
+void ControllerApi::setPosition(qReal::Id const &elem, QPointF const &newValue)
+{
+	mGraphicalApi->setPosition(elem, newValue);
+}
+
+QPointF ControllerApi::position(qReal::Id const &elem) const
+{
+	return mGraphicalApi->position(elem);
+}
+
+void ControllerApi::setConfiguration(qReal::Id const &elem, QPolygon const &newValue)
+{
+	mGraphicalApi->setConfiguration(elem, newValue);
+}
+
+QPolygon ControllerApi::configuration(qReal::Id const &elem) const
+{
+	return mGraphicalApi->configuration(elem);
+}
+
+//need to unite logical and graphical calls in this one
+void ControllerApi::setFrom(qReal::Id const &elem, qReal::Id const &newValue)
+{
+	mGraphicalApi->setFrom(elem, newValue);
+}
+
+qReal::Id ControllerApi::from(qReal::Id const &elem) const
+{
+	return mGraphicalApi->from(elem);
+}
+
+void ControllerApi::setFromPort(qReal::Id const &elem, qreal const &newValue)
+{
+	mGraphicalApi->setFromPort(elem, newValue);
+}
+
+qreal ControllerApi::fromPort(qReal::Id const &elem) const
+{
+	return fromPort(elem);
+}
+
+void ControllerApi::setTo(qReal::Id const &elem, qReal::Id const &newValue)
+{
+	mGraphicalApi->setTo(elem, newValue);
+}
+
+qReal::Id ControllerApi::to(qReal::Id const &elem) const
+{
+	return mGraphicalApi->to(elem);
+}
+
+void ControllerApi::setToPort(qReal::Id const &elem, qreal const &newValue)
+{
+	mGraphicalApi->setToPort(elem, newValue);
+}
+
+qreal ControllerApi::toPort(qReal::Id const &elem) const
+{
+	return mGraphicalApi->toPort(elem);
+}
+
+qReal::EditorInterface* ControllerApi::editorInterface(QString const &editor) const //editor manager
+{
+	return mEditorManagerList->at(activeEditorManagerIndex)->editorInterface(editor);
+}
 
 
 

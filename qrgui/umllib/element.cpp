@@ -30,17 +30,17 @@ Id Element::id() const
 
 qReal::Id Element::logicalId() const
 {
-	return mGraphicalAssistApi->logicalId(mId);
+	return mControllerApi->logicalId(mId);
 }
 
 QString Element::name() const
 {
-	return mGraphicalAssistApi->name(id());
+	return mControllerApi->graphicalName(id());
 }
 
 void Element::updateData()
 {
-	setToolTip(mGraphicalAssistApi->toolTip(id()));
+	setToolTip(mControllerApi->toolTip(id()));
 }
 
 QList<ContextMenuAction*> Element::contextMenuActions()
@@ -50,12 +50,12 @@ QList<ContextMenuAction*> Element::contextMenuActions()
 
 QString Element::logicalProperty(QString const &roleName) const
 {
-	return mLogicalAssistApi->propertyByRoleName(logicalId(), roleName).toString();
+	return mControllerApi->propertyByRoleName(logicalId(), roleName).toString();
 }
 
 void Element::setLogicalProperty(QString const &roleName, QString const &value)
 {
-	mLogicalAssistApi->setPropertyByRoleName(logicalId(), value, roleName);
+	mControllerApi->setPropertyByRoleName(logicalId(), value, roleName);
 }
 
 void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi,

@@ -420,61 +420,61 @@ void EdgeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	//	bool deleteCurrentPoint = false;
+	/*	bool deleteCurrentPoint = false;
 
-	//	if  (mLine.size() >= 3) {
+		if  (mLine.size() >= 3) {
 
-	//		if ((mDragPoint > 0) && (mDragPoint < (mLine.size() - 1))) {
+			if ((mDragPoint > 0) && (mDragPoint < (mLine.size() - 1))) {
 
-	//			QPainterPath path;
-	//			QPainterPathStroker neighbourhood;
-	//			neighbourhood.setWidth(20);
+				QPainterPath path;
+				QPainterPathStroker neighbourhood;
+				neighbourhood.setWidth(20);
 
-	//			path.moveTo(mLine[mDragPoint - 1]);
-	//			path.lineTo(mLine[mDragPoint + 1]);
+				path.moveTo(mLine[mDragPoint - 1]);
+				path.lineTo(mLine[mDragPoint + 1]);
 
-	//			if (neighbourhood.createStroke(path).contains(mLine[mDragPoint])) {
+				if (neighbourhood.createStroke(path).contains(mLine[mDragPoint])) {
 
-	//				delPointHandler(mLine[mDragPoint]);
-	//				mDragPoint -= 1;
-	//				deleteCurrentPoint = true;
-	//			}
-	//		}
+					delPointHandler(mLine[mDragPoint]);
+					mDragPoint -= 1;
+					deleteCurrentPoint = true;
+				}
+			}
 
-	//		// try to eliminate unneeded points
+			 try to eliminate unneeded points
 
-	//		if ((mDragPoint != -1) && (mDragPoint < (mLine.size() - 2))) {
-	//			removeUnneededPoints(mDragPoint);
-	//			if (deleteCurrentPoint)
-	//				mDragPoint += 1;
-	//		}
+			if ((mDragPoint != -1) && (mDragPoint < (mLine.size() - 2))) {
+				removeUnneededPoints(mDragPoint);
+				if (deleteCurrentPoint)
+					mDragPoint += 1;
+			}
 
-	//		if (mDragPoint >= 2)
-	//			removeUnneededPoints(mDragPoint - 2);
+			if (mDragPoint >= 2)
+				removeUnneededPoints(mDragPoint - 2);
 
 
-	//	}
+		}
 
-	//	if (mDragPoint == -1)
-	//		Element::mouseReleaseEvent(event);
-	//	else
-	//		mDragPoint = -1;
+		if (mDragPoint == -1)
+			Element::mouseReleaseEvent(event);
+		else
+			mDragPoint = -1;
 
-	//	if (SettingsManager::value("SquareLine", false).toBool())
-	//		squarizeHandler(QPointF());
+		if (SettingsManager::value("SquareLine", false).toBool())
+			squarizeHandler(QPointF());
 
-	//	connectToPort();
+		connectToPort();
 
-	//	if (mBeginning)
-	//		mBeginning->setPortsVisible(false);
+		if (mBeginning)
+			mBeginning->setPortsVisible(false);
 
-	//	if (mEnding)
-	//		mEnding->setPortsVisible(false);
+		if (mEnding)
+			mEnding->setPortsVisible(false);
 
-	//	// cleanup after moving/resizing
-	//	mBeginning = mEnding = NULL;
+		 cleanup after moving/resizing
+		mBeginning = mEnding = NULL;
 
-	//	arrangeSrcAndDst();
+		arrangeSrcAndDst();*/
 
 	deleteUnneededPoints();
 

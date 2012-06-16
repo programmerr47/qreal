@@ -91,6 +91,28 @@ public:
 	virtual QVariant propertyByRoleName(qReal::Id const &elem, QString const &roleName) const;// element //logical
 	virtual void setPropertyByRoleName(qReal::Id const &elem, QVariant const &newValue, QString const &roleName);// element
 
+	virtual void setPosition(qReal::Id const &elem, QPointF const &newValue); //edgeElement
+	virtual QPointF position(qReal::Id const &elem) const;//edgeElement
+
+	virtual void setConfiguration(qReal::Id const &elem, QPolygon const &newValue); //edgeElement
+	virtual QPolygon configuration(qReal::Id const &elem) const;//edgeElement
+
+	//need to unite logical and graphical calls in this one
+	virtual void setFrom(qReal::Id const &elem, qReal::Id const &newValue); //edgeElement
+	virtual qReal::Id from(qReal::Id const &elem) const;//edgeElement
+
+	virtual void setFromPort(qReal::Id const &elem, qreal const &newValue); //edgeElement
+	virtual qreal fromPort(qReal::Id const &elem) const;//edgeElement
+
+	virtual void setTo(qReal::Id const &elem, qReal::Id const &newValue); //edgeElement= 0;
+	virtual qReal::Id to(qReal::Id const &elem) const;//edgeElement
+
+	virtual void setToPort(qReal::Id const &elem, qreal const &newValue);//edgeElement
+	virtual qreal toPort(qReal::Id const &elem) const;//edgeElement
+
+	virtual qReal::EditorInterface* editorInterface(QString const &editor) const;//editor manager
+
+
 
 
 private:

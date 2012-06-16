@@ -24,4 +24,26 @@ namespace qrRepo{
 		virtual QVariant propertyByRoleName(qReal::Id const &elem, QString const &roleName) const = 0; //logical
 		virtual void setPropertyByRoleName(qReal::Id const &elem, QVariant const &newValue, QString const &roleName) = 0;
 
+		virtual void setPosition(qReal::Id const &elem, QPointF const &newValue) = 0; //edgeElement
+		virtual QPointF position(qReal::Id const &elem) const = 0;
+
+		virtual void setConfiguration(qReal::Id const &elem, QPolygon const &newValue) = 0; //edgeElement
+		virtual QPolygon configuration(qReal::Id const &elem) const = 0;
+
+		//need to unite logical and graphical calls in this one
+		virtual void setFrom(qReal::Id const &elem, qReal::Id const &newValue) = 0; //edgeElement
+		virtual qReal::Id from(qReal::Id const &elem) const = 0;
+
+		virtual void setFromPort(qReal::Id const &elem, qreal const &newValue) = 0; //edgeElement
+		virtual qreal fromPort(qReal::Id const &elem) const = 0;
+
+		virtual void setTo(qReal::Id const &elem, qReal::Id const &newValue) = 0;
+		virtual qReal::Id to(qReal::Id const &elem) const = 0;
+
+		virtual void setToPort(qReal::Id const &elem, qreal const &newValue) = 0;
+		virtual qreal toPort(qReal::Id const &elem) const = 0;
+
+		virtual qReal::EditorInterface* editorInterface(QString const &editor) const = 0;//editor manager
+
+
 	};
