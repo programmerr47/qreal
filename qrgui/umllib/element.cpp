@@ -58,13 +58,13 @@ void Element::setLogicalProperty(QString const &roleName, QString const &value)
 	mLogicalAssistApi->setPropertyByRoleName(logicalId(), value, roleName);
 }
 
-void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi,
-						   ElementControllerApi *controllerApi)
+void Element::setAssistApi(qReal::models::GraphicalModelAssistApi &graphicalAssistApi, qReal::models::LogicalModelAssistApi &logicalAssistApi,
+                           ElementControllerApi &controllerApi)
 {
-	mGraphicalAssistApi = graphicalAssistApi;
-	mLogicalAssistApi = logicalAssistApi;
+    mGraphicalAssistApi = &graphicalAssistApi;
+    mLogicalAssistApi = &logicalAssistApi;
 
-	mControllerApi = controllerApi;
+    mControllerApi = &controllerApi;
 }
 
 void Element::initTitlesBy(QRectF const& contents)

@@ -1120,7 +1120,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->setMainWindow(this);
 	QModelIndex const index = rootIndex;
 
-	tab->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi());
+    tab->mvIface()->setAssistApi(mModels->graphicalModelAssistApi(), mModels->logicalModelAssistApi(), *mControllerApi);
 
 	tab->mvIface()->setModel(mModels->graphicalModel());
 	if (tab->sceneRect() == QRectF(0, 0, 0, 0)) {

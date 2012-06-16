@@ -55,9 +55,9 @@ public:
 
 	virtual void setColorRect(bool bl) = 0;
 
-	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
-					  qReal::models::LogicalModelAssistApi *logicalAssistApi,
-					  ElementControllerApi *controllerApi);
+    void setAssistApi(qReal::models::GraphicalModelAssistApi &graphicalAssistApi,
+                      qReal::models::LogicalModelAssistApi &logicalAssistApi,
+                      ElementControllerApi &controllerApi);
 
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);
