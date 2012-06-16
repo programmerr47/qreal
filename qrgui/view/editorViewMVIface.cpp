@@ -135,7 +135,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
 		if (elem) {
-			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi);
+			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi, NULL);
 		}
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();

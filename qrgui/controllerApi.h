@@ -84,6 +84,15 @@ public:
 	virtual void deleteUsage(qReal::Id const &source, qReal::Id const &destination); //editorViewScene
 	virtual void createUsed(qReal::Id const &sourceElement, qReal::Id const &elementType); //editorViewScene
 
+	virtual qReal::IdList graphicalIdsByLogicalId(qReal::Id const &logicalId) const; // element
+	virtual qReal::Id logicalId(qReal::Id const &elem) const;// element
+	virtual QString graphicalName(qReal::Id const &elem) const;// element
+	virtual QString toolTip(qReal::Id const &elem) const;// element
+	virtual QVariant propertyByRoleName(qReal::Id const &elem, QString const &roleName) const;// element //logical
+	virtual void setPropertyByRoleName(qReal::Id const &elem, QVariant const &newValue, QString const &roleName);// element
+
+
+
 private:
 	int activeEditorManagerIndex;
 	qReal::MainWindow &mMainWindow;

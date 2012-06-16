@@ -314,4 +314,38 @@ void ControllerApi::createUsed(const Id &sourceElement, const Id &elementType)
 	mLogicalApi->createUsed(sourceElement, elementType);
 }
 
+IdList ControllerApi::graphicalIdsByLogicalId(Id const &logicalId) const
+{
+	return mGraphicalApi->graphicalIdsByLogicalId(logicalId);
+}
+
+Id ControllerApi::logicalId(Id const &elem) const
+{
+	return logicalId(elem);
+}
+
+//look for implementation of 'api->name', probably equivalent to 'name'
+QString ControllerApi::graphicalName(qReal::Id const &elem) const
+{
+	return mGraphicalApi->name(elem);
+}
+
+QString ControllerApi::toolTip(qReal::Id const &elem) const
+{
+	return mGraphicalApi->toolTip(elem);
+}
+
+QVariant ControllerApi::propertyByRoleName(qReal::Id const &elem, QString const &roleName) const
+{
+	return mLogicalApi->propertyByRoleName(elem, roleName);
+}
+
+void ControllerApi::setPropertyByRoleName(qReal::Id const &elem, QVariant const &newValue, QString const &roleName)
+{
+	mLogicalApi->setPropertyByRoleName(elem, newValue, roleName);
+}
+
+
+
+
 

@@ -15,6 +15,8 @@
 #include "../models/graphicalModelAssistApi.h"
 #include "../models/logicalModelAssistApi.h"
 
+#include "../elementControllerApi.h"
+
 /** @brief size of a point port */
 const int kvadratik = 10;
 
@@ -53,7 +55,9 @@ public:
 
 	virtual void setColorRect(bool bl) = 0;
 
-	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi);
+	void setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
+					  qReal::models::LogicalModelAssistApi *logicalAssistApi,
+					  ElementControllerApi *controllerApi);
 
 public slots:
 	virtual void singleSelectionState(const bool singleSelected);
@@ -71,6 +75,8 @@ protected:
 
 	qReal::models::LogicalModelAssistApi *mLogicalAssistApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalAssistApi;
+
+	ElementControllerApi *mControllerApi;
 
 	void initTitlesBy(QRectF const& contents);
 };

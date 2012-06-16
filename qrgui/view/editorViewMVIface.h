@@ -15,6 +15,7 @@ namespace models {
 	class LogicalModelAssistApi;
 }
 class EditorView;
+class Id;
 
 class EditorViewMViface : public QAbstractItemView
 {
@@ -53,6 +54,8 @@ private:
 
 	EditorViewScene *mScene;
 	qReal::EditorView *mView;
+	models::GraphicalModelAssistApi *mGraphicalAssistApi;
+	models::LogicalModelAssistApi *mLogicalAssistApi;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;

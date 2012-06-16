@@ -9,6 +9,7 @@ Element::Element()
 	, mElementImpl(NULL)
 	, mLogicalAssistApi(NULL)
 	, mGraphicalAssistApi(NULL)
+	, mControllerApi(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
 		ItemClipsToShape | ItemSendsGeometryChanges);
@@ -57,10 +58,13 @@ void Element::setLogicalProperty(QString const &roleName, QString const &value)
 	mLogicalAssistApi->setPropertyByRoleName(logicalId(), value, roleName);
 }
 
-void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi)
+void Element::setAssistApi(qReal::models::GraphicalModelAssistApi *graphicalAssistApi, qReal::models::LogicalModelAssistApi *logicalAssistApi,
+						   ElementControllerApi *controllerApi)
 {
 	mGraphicalAssistApi = graphicalAssistApi;
 	mLogicalAssistApi = logicalAssistApi;
+
+	mControllerApi = controllerApi;
 }
 
 void Element::initTitlesBy(QRectF const& contents)
