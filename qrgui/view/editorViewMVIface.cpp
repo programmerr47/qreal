@@ -17,6 +17,7 @@ EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	, mView(view)
 	, mGraphicalAssistApi(NULL)
 	, mLogicalAssistApi(NULL)
+	, mControllerApi(NULL)
 {
 	mScene->setMVIface(this);
 	mScene->mView = mView;
@@ -135,7 +136,7 @@ void EditorViewMViface::rowsInserted(QModelIndex const &parent, int start, int e
 
 		Element* elem = mScene->mainWindow()->manager()->graphicalObject(currentId);
 		if (elem) {
-			elem->setAssistApi(mGraphicalAssistApi, mLogicalAssistApi, NULL);
+            elem->setAssistApi(*mGraphicalAssistApi, *mLogicalAssistApi, *mControllerApi);
 		}
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
@@ -337,11 +338,11 @@ void EditorViewMViface::removeItem(QPersistentModelIndex const &index)
 	}
 }
 
-void EditorViewMViface::setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi)
+void EditorViewMViface::setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi, ControllerApi &controllerApi)
 {
 	mGraphicalAssistApi = &graphicalAssistApi;
 	mLogicalAssistApi = &logicalAssistApi;
-
+	mControllerApi = &controllerApi;
 }
 
 void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)

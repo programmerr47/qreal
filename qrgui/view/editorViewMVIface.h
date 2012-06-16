@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QAbstractItemView>
+#include "../controllerApi.h"
 
 class QGraphicsItem;
 
@@ -29,7 +30,8 @@ public:
 	QRect visualRect(const QModelIndex &index) const;
 	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
-	void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi);
+	void setAssistApi(models::GraphicalModelAssistApi &graphicalAssistApi, models::LogicalModelAssistApi &logicalAssistApi,
+                      ControllerApi &controllerApi);
 	void setLogicalModel(QAbstractItemModel * const logicalModel);
 	Id rootId();
 
@@ -56,6 +58,7 @@ private:
 	qReal::EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	models::LogicalModelAssistApi *mLogicalAssistApi;
+    ControllerApi *mControllerApi;
 
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;
