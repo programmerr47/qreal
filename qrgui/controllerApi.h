@@ -98,13 +98,13 @@ public:
 	virtual QPolygon configuration(qReal::Id const &elem) const;//edgeElement
 
 	//need to unite logical and graphical calls in this one
-	virtual void setFrom(qReal::Id const &elem, qReal::Id const &newValue); //edgeElement
+	virtual void setFrom(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue); //edgeElement
 	virtual qReal::Id from(qReal::Id const &elem) const;//edgeElement
 
 	virtual void setFromPort(qReal::Id const &elem, qreal const &newValue); //edgeElement
 	virtual qreal fromPort(qReal::Id const &elem) const;//edgeElement
 
-	virtual void setTo(qReal::Id const &elem, qReal::Id const &newValue); //edgeElement= 0;
+	virtual void setTo(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue); //edgeElement= 0;
 	virtual qReal::Id to(qReal::Id const &elem) const;//edgeElement
 
 	virtual void setToPort(qReal::Id const &elem, qreal const &newValue);//edgeElement

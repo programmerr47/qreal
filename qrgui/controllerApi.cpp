@@ -365,10 +365,10 @@ QPolygon ControllerApi::configuration(qReal::Id const &elem) const
 	return mGraphicalApi->configuration(elem);
 }
 
-//need to unite logical and graphical calls in this one
-void ControllerApi::setFrom(qReal::Id const &elem, qReal::Id const &newValue)
+void ControllerApi::setFrom(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue)
 {
-	mGraphicalApi->setFrom(elem, newValue);
+	mGraphicalApi->setFrom(id, newValue);
+	mLogicalApi->setFrom(logicalId, newGraphicalValue);
 }
 
 qReal::Id ControllerApi::from(qReal::Id const &elem) const
@@ -383,12 +383,13 @@ void ControllerApi::setFromPort(qReal::Id const &elem, qreal const &newValue)
 
 qreal ControllerApi::fromPort(qReal::Id const &elem) const
 {
-	return fromPort(elem);
+	return mGraphicalApi->fromPort(elem);
 }
 
-void ControllerApi::setTo(qReal::Id const &elem, qReal::Id const &newValue)
+void ControllerApi::setTo(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue)
 {
-	mGraphicalApi->setTo(elem, newValue);
+	mGraphicalApi->setTo(id, newGraphicalValue);
+	mLogicalApi->setTo(logicalId, newValue);
 }
 
 qReal::Id ControllerApi::to(qReal::Id const &elem) const

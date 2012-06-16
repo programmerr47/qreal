@@ -31,13 +31,13 @@ namespace qrRepo{
 		virtual QPolygon configuration(qReal::Id const &elem) const = 0;
 
 		//need to unite logical and graphical calls in this one
-		virtual void setFrom(qReal::Id const &elem, qReal::Id const &newValue) = 0; //edgeElement
+		virtual void setFrom(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue) = 0; //edgeElement
 		virtual qReal::Id from(qReal::Id const &elem) const = 0;
 
 		virtual void setFromPort(qReal::Id const &elem, qreal const &newValue) = 0; //edgeElement
 		virtual qreal fromPort(qReal::Id const &elem) const = 0;
 
-		virtual void setTo(qReal::Id const &elem, qReal::Id const &newValue) = 0;
+		virtual void setTo(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue) = 0;
 		virtual qReal::Id to(qReal::Id const &elem) const = 0;
 
 		virtual void setToPort(qReal::Id const &elem, qreal const &newValue) = 0;
