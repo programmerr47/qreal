@@ -321,7 +321,7 @@ IdList ControllerApi::graphicalIdsByLogicalId(Id const &logicalId) const
 
 Id ControllerApi::logicalId(Id const &elem) const
 {
-	return logicalId(elem);
+	return mGraphicalApi->logicalId(elem);
 }
 
 //look for implementation of 'api->name', probably equivalent to 'name'
