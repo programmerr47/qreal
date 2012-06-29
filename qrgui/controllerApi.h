@@ -68,7 +68,6 @@ public:
 	virtual qReal::Id graphicalCreateElement(qReal::Id const &parent, qReal::Id const &id, bool isFromLogicalModel, QString const &name, QPointF const &position);//editorViewScene
 	virtual void graphicalSetTo(qReal::Id const &elem, qReal::Id const &newValue); //editorViewScene
 	virtual void graphicalSetFrom(qReal::Id const &elem, qReal::Id const &newValue); //editorViewScene
-	virtual QString name(qReal::Id const &id) const; //editorViewScene
 	virtual qReal::IdList logicalElements(qReal::Id const &type) const; //editorViewScene
 	virtual qReal::Id findElementByType(QString const &type) const; //editorViewScene
 	virtual qReal::IdList outgoingConnections(qReal::Id const &id) const; //editorViewScene
@@ -107,11 +106,24 @@ public:
 	virtual void setTo(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue); //edgeElement= 0;
 	virtual qReal::Id to(qReal::Id const &elem) const;//edgeElement
 
+	//only graphical
 	virtual void setToPort(qReal::Id const &elem, qreal const &newValue);//edgeElement
 	virtual qreal toPort(qReal::Id const &elem) const;//edgeElement
 
 	virtual qReal::EditorInterface* editorInterface(QString const &editor) const;//editor manager
 
+	virtual void changeParent(qReal::Id const &element, qReal::Id const &parent, QPointF const &position);//node element
+	virtual void copyProperties(qReal::Id const &dest, qReal::Id const &src);// node element
+
+	virtual void setName(qReal::Id const &elem, QString const &newValue); //node element
+	virtual QString name(qReal::Id const &elem) const;//node element //editorViewScene
+
+	virtual qReal::IdList temporaryRemovedLinksFrom(qReal::Id const &elem) const;//node element
+	virtual qReal::IdList temporaryRemovedLinksTo(qReal::Id const &elem) const;//node element
+	virtual qReal::IdList temporaryRemovedLinksNone(qReal::Id const &elem) const;//node element
+	virtual void removeTemporaryRemovedLinks(qReal::Id const &elem);//node element
+
+	virtual void stackBeforeGraphical(qReal::Id const &element, qReal::Id const &sibling);
 
 
 

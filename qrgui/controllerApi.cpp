@@ -367,8 +367,8 @@ QPolygon ControllerApi::configuration(qReal::Id const &elem) const
 
 void ControllerApi::setFrom(qReal::Id const &logicalId, qReal::Id const &id, qReal::Id const &newValue, qReal::Id const &newGraphicalValue)
 {
-	mGraphicalApi->setFrom(id, newValue);
-	mLogicalApi->setFrom(logicalId, newGraphicalValue);
+	mGraphicalApi->setFrom(id, newGraphicalValue);
+	mLogicalApi->setFrom(logicalId, newValue);
 }
 
 qReal::Id ControllerApi::from(qReal::Id const &elem) const
@@ -412,6 +412,43 @@ qReal::EditorInterface* ControllerApi::editorInterface(QString const &editor) co
 	return mEditorManagerList->at(activeEditorManagerIndex)->editorInterface(editor);
 }
 
+void ControllerApi::changeParent(Id const &element, Id const &parent, QPointF const &position)
+{
+	return mGraphicalApi->changeParent(element, parent, position);
+}
+
+void ControllerApi::copyProperties(Id const &dest, Id const &src)
+{
+	mGraphicalApi->mutableGraphicalRepoApi().copyProperties(dest, src);
+}
+
+void ControllerApi::setName(Id const &elem, QString const &newValue)
+{
+	mGraphicalApi->setName(elem, newValue);
+}
+
+IdList ControllerApi::temporaryRemovedLinksFrom(Id const &elem) const
+{
+	return mGraphicalApi->graphicalRepoApi().temporaryRemovedLinksAt(elem, "from");
+}
+
+IdList ControllerApi::temporaryRemovedLinksTo(Id const &elem) const
+{
+	return mGraphicalApi->graphicalRepoApi().temporaryRemovedLinksAt(elem, "to");
+}
+
+IdList ControllerApi::temporaryRemovedLinksNone(Id const &elem) const
+{
+	return mGraphicalApi->graphicalRepoApi().temporaryRemovedLinksAt(elem, QString());
+}
+
+void ControllerApi::removeTemporaryRemovedLinks(Id const &elem)
+{
+	mGraphicalApi->removeTemporaryRemovedLinks(elem);
+}
 
 
-
+void ControllerApi::stackBeforeGraphical(const Id &element, const Id &sibling)
+{
+	mGraphicalApi->stackBefore(element, sibling);
+}

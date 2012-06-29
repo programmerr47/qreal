@@ -45,5 +45,18 @@ namespace qrRepo{
 
 		virtual qReal::EditorInterface* editorInterface(QString const &editor) const = 0;//editor manager
 
+		virtual void changeParent(qReal::Id const &element, qReal::Id const &parent, QPointF const &position) = 0;// node element
+		virtual void copyProperties(qReal::Id const &dest, qReal::Id const &src) = 0;// node element
+
+
+		virtual void setName(qReal::Id const &elem, QString const &newValue) = 0; //node element
+		virtual QString name(qReal::Id const &elem) const = 0;//node element
+
+		virtual qReal::IdList temporaryRemovedLinksFrom(qReal::Id const &elem) const = 0;
+		virtual qReal::IdList temporaryRemovedLinksTo(qReal::Id const &elem) const = 0;
+		virtual qReal::IdList temporaryRemovedLinksNone(qReal::Id const &elem) const = 0;
+		virtual void removeTemporaryRemovedLinks(qReal::Id const &elem) = 0;
+
+		virtual void stackBeforeGraphical(qReal::Id const &element, qReal::Id const &sibling) = 0;
 
 	};
