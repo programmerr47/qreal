@@ -7,8 +7,6 @@ using namespace qReal;
 Element::Element()
 	: mMoving(false)
 	, mElementImpl(NULL)
-	, mLogicalAssistApi(NULL)
-	, mGraphicalAssistApi(NULL)
 	, mControllerApi(NULL)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemClipsChildrenToShape |
@@ -58,12 +56,8 @@ void Element::setLogicalProperty(QString const &roleName, QString const &value)
 	mControllerApi->setPropertyByRoleName(logicalId(), value, roleName);
 }
 
-void Element::setAssistApi(qReal::models::GraphicalModelAssistApi &graphicalAssistApi, qReal::models::LogicalModelAssistApi &logicalAssistApi,
-							ElementControllerApi &controllerApi)
+void Element::setAssistApi(ElementControllerApi &controllerApi)
 {
-	mGraphicalAssistApi = &graphicalAssistApi;
-	mLogicalAssistApi = &logicalAssistApi;
-
 	mControllerApi = &controllerApi;
 }
 
