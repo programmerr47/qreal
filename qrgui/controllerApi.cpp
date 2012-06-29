@@ -21,6 +21,16 @@ ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW,
 {
 }
 
+ControllerApi::getModels()
+{
+	return mModels;
+}
+
+ControllerApi::getEditorManagers()
+{
+	return mEditorManagerList;
+}
+
 QList<QString> ControllerApi::getEditorsNames() const
 {
 	QList<QString> editorNames;

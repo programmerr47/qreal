@@ -33,6 +33,13 @@ public:
 	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW,
 				  qReal::models::Models *models);
 
+	/// Temporary getters for MainWindow
+	//==================================
+	qReal::models::Models* getModels();
+	qReal::EditorManagerList* getEditorManagers();
+
+	//==================================
+
 	virtual QList<QString> getEditorsNames() const;//PluginDialog
 	virtual QMap<QString, QString> getDiagramsNames() const;//PluginDialog
 	virtual QMap<QString, QString> getElementsNames() const;//PluginDialog
