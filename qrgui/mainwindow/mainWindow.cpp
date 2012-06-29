@@ -112,8 +112,7 @@ MainWindow::MainWindow()
 		mSaveFile = saveFile.absoluteFilePath();
 	mModels = new models::Models(saveFile.absoluteFilePath(), *mEditorManagerList->at(0));
 
-	mControllerApi = new ControllerApi(*mEditorManagerList, *this, mModels->logicalRepoApi(),
-										&mModels->graphicalModelAssistApi(), &mModels->logicalModelAssistApi());
+	mControllerApi = new ControllerApi(*mEditorManagerList, *this, mModels);
 	mPropertyModel = new PropertyEditorModel(*mControllerApi);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);

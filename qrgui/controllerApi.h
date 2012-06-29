@@ -16,6 +16,9 @@
 namespace qReal{
 	class MainWindow;
 	class EditorManager;
+	namespace models{
+	class Models;
+	}
 }
 
 namespace qrRepo{
@@ -27,9 +30,8 @@ class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
 		, public ElementControllerApi
 {
 public:
-	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW, const qrRepo::LogicalRepoApi &mLogicalApi,
-				  qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
-				  qReal::models::LogicalModelAssistApi *logicalAssistApi);
+	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW,
+				  qReal::models::Models *models);
 
 	virtual QList<QString> getEditorsNames() const;//PluginDialog
 	virtual QMap<QString, QString> getDiagramsNames() const;//PluginDialog
@@ -130,7 +132,7 @@ public:
 private:
 	int activeEditorManagerIndex;
 	qReal::MainWindow &mMainWindow;
-	//qReal::EditorManager *mEditorManager;
+	qReal::models::Models *mModels;
 	qReal::EditorManagerList *mEditorManagerList;
 	const qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalApi;

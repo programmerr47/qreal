@@ -3,19 +3,21 @@
 #include "mainwindow/mainWindow.h"
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
+#include "models/models.h"
 
 using namespace qReal;
+using namespace models;
 using namespace qrRepo;
 
-ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW, const LogicalRepoApi &mLogicalApi,
-							 qReal::models::GraphicalModelAssistApi *graphicalAssistApi,
-							 qReal::models::LogicalModelAssistApi *logicalAssistApi)
+ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW,
+							 Models *models)
 	: mEditorManagerList(&mgrl)
 	, mMainWindow(mMW)
-	, mLogicalRepoApi(mLogicalApi)
+	, mModels(models)
+	, mLogicalRepoApi(models->logicalRepoApi())
 	, activeEditorManagerIndex(0)
-	, mGraphicalApi(graphicalAssistApi)
-	, mLogicalApi(logicalAssistApi)
+	, mGraphicalApi(&models->graphicalModelAssistApi())
+	, mLogicalApi(&models->logicalModelAssistApi())
 {
 }
 
