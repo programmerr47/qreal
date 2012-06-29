@@ -202,6 +202,11 @@ private slots:
 	void closeProjectAndSave();
 
 private:
+	/// Methods of initialization
+	void setPathToImages();
+	bool showSplash(QSplashScreen *splash);
+
+
 	/// @param mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMap<EditorView*, CodeArea*> *mCodeTabManager;
 

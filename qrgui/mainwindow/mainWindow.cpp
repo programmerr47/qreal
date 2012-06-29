@@ -67,31 +67,19 @@ MainWindow::MainWindow()
 	TimeMeasurer timeMeasurer("MainWindow::MainWindow");
 	timeMeasurer.doNothing(); //to avoid the unused variables problem
 
-	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
-
 	QSplashScreen* splash =
 			new QSplashScreen(QPixmap(":/icons/kroki3.PNG"), Qt::SplashScreen | Qt::WindowStaysOnTopHint);
 
 	QProgressBar *progress = createProgressBar(splash);
 
-	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
-	if (!imagesDir.exists()) {
-		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
-	}
-
+	setPathToImages();
 	// =========== Step 1: splash screen loaded, progress bar initialized ===========
 
 	progress->setValue(5);
 
 	mUi->setupUi(this);
 
-	if (showSplash) {
-		splash->show();
-		QApplication::processEvents();
-	}
-	else {
-		mUi->actionShowSplash->setChecked(false);
-	}
+	bool splashShown = showSplash(splash);
 
 	initRecentProjectsMenu();
 	initToolManager();
@@ -163,7 +151,7 @@ MainWindow::MainWindow()
 
 	progress->setValue(100);
 
-	if (showSplash)
+	if (splashShown)
 		splash->close();
 	delete splash;
 
@@ -185,6 +173,29 @@ MainWindow::MainWindow()
 	connect(&mAutoSaveTimer, SIGNAL(timeout()), this, SLOT(autosave()));
 	connectWindowTitle();
 
+}
+
+void MainWindow::setPathToImages()
+{
+	QDir imagesDir(SettingsManager::value("pathToImages", "/someWeirdDirectoryName").toString());
+	if (!imagesDir.exists()) {
+		SettingsManager::setValue("pathToImages", qApp->applicationDirPath() + "/images/iconset1");
+	}
+}
+
+bool MainWindow::showSplash(QSplashScreen* splash)
+{
+	bool showSplash = SettingsManager::value("Splashscreen", true).toBool();
+
+	if (showSplash) {
+		splash->show();
+		QApplication::processEvents();
+	}
+	else {
+		mUi->actionShowSplash->setChecked(false);
+	}
+
+	return showSplash;
 }
 
 void MainWindow::connectActions()
