@@ -112,14 +112,14 @@ void NodeElement::copyChildren(NodeElement *source)
 		NodeElement *element = dynamic_cast<NodeElement*>(child);
 		if (element) {
 			NodeElement *copyOfChild = element->clone();
-			mGraphicalAssistApi->changeParent(copyOfChild->id(), id(), element->pos());
+			mControllerApi->changeParent(copyOfChild->id(), id(), element->pos());
 		}
 	}
 }
 
 void NodeElement::copyProperties(NodeElement *source)
 {
-	mGraphicalAssistApi->copyProperties(id(), source->id());
+	mControllerApi->copyProperties(id(), source->id());
 }
 
 void NodeElement::copyEdges(NodeElement *source)
@@ -129,7 +129,7 @@ void NodeElement::copyEdges(NodeElement *source)
 
 void NodeElement::setName(QString value)
 {
-	mGraphicalAssistApi->setName(id(), value);
+	mControllerApi->setName(id(), value);
 }
 
 void NodeElement::setGeometry(QRectF const &geom)
@@ -326,12 +326,12 @@ void NodeElement::storeGeometry()
 {
 	QRectF contents = mContents; // saving correct current contents
 
-	if ((pos() != mGraphicalAssistApi->position(id()))) { // check if it's been changed
-		mGraphicalAssistApi->setPosition(id(), pos());
+	if ((pos() != mControllerApi->position(id()))) { // check if it's been changed
+		mControllerApi->setPosition(id(), pos());
 	}
 
-	if (QPolygon(mContents.toAlignedRect()) != mGraphicalAssistApi->configuration(id())) { // check if it's been changed
-		mGraphicalAssistApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
+	if (QPolygon(mContents.toAlignedRect()) != mControllerApi->configuration(id())) { // check if it's been changed
+		mControllerApi->setConfiguration(id(), QPolygon(contents.toAlignedRect()));
 	}
 }
 
@@ -675,11 +675,11 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 			// commented because of bug with double event sending (see #204)
 	//		mHighlightedNode = NULL;
 
-			mGraphicalAssistApi->changeParent(id(), newParent->id(),
+			mControllerApi->changeParent(id(), newParent->id(),
 				mapToItem(evScene->getElem(newParent->id()), mapFromScene(scenePos())));
 
 			if (insertBefore != NULL) {
-				mGraphicalAssistApi->stackBefore(id(), insertBefore->id());
+				mControllerApi->stackBeforeGraphical(id(), insertBefore->id());
 			}
 
 			newParent->resize(newParent->mContents);
@@ -690,7 +690,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 				newParent = dynamic_cast<NodeElement*>(newParent->parentItem());
 			}
 		} else {
-			mGraphicalAssistApi->changeParent(id(), evScene->rootItemId(), scenePos());
+			mControllerApi->changeParent(id(), evScene->rootItemId(), scenePos());
 		}
 	}
 
@@ -734,7 +734,7 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
-	EditorInterface const * const editorInterface = mGraphicalAssistApi->editorManager().editorInterface(id().editor());
+	EditorInterface const * const editorInterface = mControllerApi->editorInterface(id().editor());
 	foreach (QString elementName, editorInterface->elements(id().diagram())) {
 		int ne = editorInterface->isNodeOrEdge(elementName);
 		if (ne == -1) {
@@ -835,8 +835,8 @@ void NodeElement::updateData()
 {
 	Element::updateData();
 	if (mMoving == 0) {
-		QPointF newpos = mGraphicalAssistApi->position(id());
-		QPolygon newpoly = mGraphicalAssistApi->configuration(id());
+		QPointF newpos = mControllerApi->position(id());
+		QPolygon newpoly = mControllerApi->configuration(id());
 		QRectF newRect; // Use default ((0,0)-(0,0))
 		// QPolygon::boundingRect is buggy :-(
 		if (!newpoly.isEmpty()) {
@@ -1544,10 +1544,10 @@ void NodeElement::connectTemporaryRemovedLinksToPort(IdList const &temporaryRemo
 
 void NodeElement::checkConnectionsToPort()
 {
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksFrom(id()), "from");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksTo(id()), "to");
-	connectTemporaryRemovedLinksToPort(mGraphicalAssistApi->temporaryRemovedLinksNone(id()), QString());
-	mGraphicalAssistApi->removeTemporaryRemovedLinks(id());
+	connectTemporaryRemovedLinksToPort(mControllerApi->temporaryRemovedLinksFrom(id()), "from");
+	connectTemporaryRemovedLinksToPort(mControllerApi->temporaryRemovedLinksTo(id()), "to");
+	connectTemporaryRemovedLinksToPort(mControllerApi->temporaryRemovedLinksNone(id()), QString());
+	mControllerApi->removeTemporaryRemovedLinks(id());
 
 	// i have no idea what this method does, but it is called when the element
 	// is dropped on scene. so i'll just leave this code here for now.
