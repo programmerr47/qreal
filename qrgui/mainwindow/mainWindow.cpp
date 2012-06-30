@@ -96,10 +96,6 @@ MainWindow::MainWindow()
 
 	progress->setValue(40);
 
-	//efimefim
-	mEditorManagerList = new EditorManagerList();
-	mEditorManagerList->append(new EditorManager());
-
 	initDocks();
 	SettingsManager::setValue("temp", mTempDir);
 	QDir dir(qApp->applicationDirPath());
@@ -108,11 +104,14 @@ MainWindow::MainWindow()
 
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
+	mControllerApi = new ControllerApi(this, mSaveFile);
+
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
-	mModels = new models::Models(saveFile.absoluteFilePath(), *mEditorManagerList->at(0));
 
-	mControllerApi = new ControllerApi(*mEditorManagerList, *this, mModels);
+	mModels = mControllerApi->getModels();
+	mEditorManagerList = mControllerApi->getEditorManagers();
+
 	mPropertyModel = new PropertyEditorModel(*mControllerApi);
 
 	mErrorReporter = new gui::ErrorReporter(mUi->errorListWidget, mUi->errorDock);
@@ -273,7 +272,6 @@ MainWindow::~MainWindow()
 	delete mRecentProjectsMenu;
 	delete mRecentProjectsMapper;
 	delete mGesturesWidget;
-	delete mModels;
 }
 
 EditorManager* MainWindow::manager()

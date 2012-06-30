@@ -30,8 +30,8 @@ class ControllerApi : public DialogControllerApi, public MainWindowControllerApi
 		, public ElementControllerApi
 {
 public:
-	ControllerApi(qReal::EditorManagerList &mgrl, qReal::MainWindow &mMW,
-				  qReal::models::Models *models);
+	ControllerApi(qReal::MainWindow *mMW, 	const QString &saveFileName);
+	~ControllerApi();
 
 	/// Temporary getters for MainWindow
 	//==================================
@@ -137,11 +137,15 @@ public:
 
 
 private:
+	void initializeModels(const QString &saveFileName);
+	void initializeEditorManagerList();
+
+
 	int activeEditorManagerIndex;
-	qReal::MainWindow &mMainWindow;
+	qReal::MainWindow *mMainWindow;
 	qReal::models::Models *mModels;
 	qReal::EditorManagerList *mEditorManagerList;
-	const qrRepo::LogicalRepoApi &mLogicalRepoApi;
+	qrRepo::LogicalRepoApi *mLogicalRepoApi;
 	qReal::models::GraphicalModelAssistApi *mGraphicalApi;
 	qReal::models::LogicalModelAssistApi *mLogicalApi;
 };

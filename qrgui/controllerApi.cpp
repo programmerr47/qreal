@@ -9,24 +9,45 @@ using namespace qReal;
 using namespace models;
 using namespace qrRepo;
 
-ControllerApi::ControllerApi(EditorManagerList &mgrl, MainWindow &mMW,
-							 Models *models)
-	: mEditorManagerList(&mgrl)
-	, mMainWindow(mMW)
-	, mModels(models)
-	, mLogicalRepoApi(models->logicalRepoApi())
+ControllerApi::ControllerApi(MainWindow *mMW, const QString &saveFileName)
+	: mMainWindow(mMW)
 	, activeEditorManagerIndex(0)
-	, mGraphicalApi(&models->graphicalModelAssistApi())
-	, mLogicalApi(&models->logicalModelAssistApi())
 {
+	initializeModels(saveFileName);
+	initializeEditorManagerList();
+	mLogicalRepoApi = &mModels->mutableLogicalRepoApi();
+	mGraphicalApi = &mModels->graphicalModelAssistApi();
+	mLogicalApi = &mModels->logicalModelAssistApi();
+
 }
 
-ControllerApi::getModels()
+ControllerApi::~ControllerApi()
+{
+	delete mModels;
+
+}
+
+void ControllerApi::initializeModels(const QString &saveFileName)
+{
+	QFileInfo saveFile(SettingsManager::value("saveFile", saveFileName).toString());
+
+	if (saveFile.exists())
+		saveFile = saveFile.absoluteFilePath();
+	mModels = new models::Models(saveFile.absoluteFilePath(), *mEditorManagerList->at(0));
+}
+
+void ControllerApi::initializeEditorManagerList()
+{
+	mEditorManagerList = new EditorManagerList();
+	mEditorManagerList->append(new EditorManager());
+}
+
+Models* ControllerApi::getModels()
 {
 	return mModels;
 }
 
-ControllerApi::getEditorManagers()
+EditorManagerList* ControllerApi::getEditorManagers()
 {
 	return mEditorManagerList;
 }
@@ -66,24 +87,24 @@ QMap<QString, QString> ControllerApi::getElementsNames() const
 
 void ControllerApi::activateItemOrDiagram(Id const &id, bool bl, bool isSetSel) const
 {
-		mMainWindow.activateItemOrDiagram(id, bl, isSetSel);
+		mMainWindow->activateItemOrDiagram(id, bl, isSetSel);
 }
 
 void ControllerApi::activateItemOrDiagram(QModelIndex const &modelIndex, bool bl, bool isSetSel) const
 {
-		mMainWindow.activateItemOrDiagram(modelIndex, bl, isSetSel);
+		mMainWindow->activateItemOrDiagram(modelIndex, bl, isSetSel);
 }
 
 QList<QString> ControllerApi::prepareParentNamesByType(QString mTypeName) const
 {
-	qReal::IdList idList = mLogicalRepoApi.elementsByType(mTypeName);
+	qReal::IdList idList = mLogicalRepoApi->elementsByType(mTypeName);
 	int size = idList.size();
 	QList<QString> parentNames;
 
 	for (int i = 0; i < size; ++i)
 	{
-		qReal::Id parentId = mLogicalRepoApi.parent(idList[i]);
-		QString parentName = mLogicalRepoApi.name(parentId);
+		qReal::Id parentId = mLogicalRepoApi->parent(idList[i]);
+		QString parentName = mLogicalRepoApi->name(parentId);
 		parentNames.append(parentName);
 	}
 
@@ -92,7 +113,7 @@ QList<QString> ControllerApi::prepareParentNamesByType(QString mTypeName) const
 
 QList<QVariant> ControllerApi::getElementsDataByType(QString mTypeName) const
 {
-	qReal::IdList idList = mLogicalRepoApi.elementsByType(mTypeName);
+	qReal::IdList idList = mLogicalRepoApi->elementsByType(mTypeName);
 	int size = idList.size();
 	QList<QVariant> elementData;
 
