@@ -104,10 +104,10 @@ MainWindow::MainWindow()
 
 	QFileInfo saveFile(SettingsManager::value("saveFile", mSaveFile).toString());
 
-	mControllerApi = new ControllerApi(this, mSaveFile);
-
 	if (saveFile.exists())
 		mSaveFile = saveFile.absoluteFilePath();
+
+	mControllerApi = new ControllerApi(this, mSaveFile);
 
 	mModels = mControllerApi->getModels();
 	mEditorManagerList = mControllerApi->getEditorManagers();

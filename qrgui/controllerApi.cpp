@@ -13,8 +13,8 @@ ControllerApi::ControllerApi(MainWindow *mMW, const QString &saveFileName)
 	: mMainWindow(mMW)
 	, activeEditorManagerIndex(0)
 {
-	initializeModels(saveFileName);
 	initializeEditorManagerList();
+	initializeModels(saveFileName);
 	mLogicalRepoApi = &mModels->mutableLogicalRepoApi();
 	mGraphicalApi = &mModels->graphicalModelAssistApi();
 	mLogicalApi = &mModels->logicalModelAssistApi();
@@ -29,11 +29,13 @@ ControllerApi::~ControllerApi()
 
 void ControllerApi::initializeModels(const QString &saveFileName)
 {
+/*right now in MainWindow
 	QFileInfo saveFile(SettingsManager::value("saveFile", saveFileName).toString());
 
 	if (saveFile.exists())
-		saveFile = saveFile.absoluteFilePath();
-	mModels = new models::Models(saveFile.absoluteFilePath(), *mEditorManagerList->at(0));
+		saveFileName = saveFile.absoluteFilePath();
+		*/
+	mModels = new models::Models(saveFileName, *mEditorManagerList->at(0));
 }
 
 void ControllerApi::initializeEditorManagerList()
